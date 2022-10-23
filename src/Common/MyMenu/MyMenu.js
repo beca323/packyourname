@@ -9,7 +9,7 @@ const items = [
     key: '/',
   },
   {
-    label: "My Documnt",
+    label: "My Document",
     icon: <FileTextOutlined />,
     key: '/dashboard/mydoc',
   },
@@ -53,7 +53,7 @@ const MyMenu = () => {
     <>
       <Style.MyMenu
         onClick={onClick}
-        defaultSelectedKeys={['1']}
+        defaultSelectedKeys={['/dashboard/mydoc']}
         defaultOpenKeys={['sub1']}
         mode="inline"
         items={items}
