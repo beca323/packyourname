@@ -17,7 +17,7 @@ const ContentContainer = styled.div`
 padding: 2rem;
 `
 
-export default class MainApp extends Component {
+export default class Dashboard extends Component {
   render() {
     return (
       <Page>

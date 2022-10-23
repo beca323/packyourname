@@ -1,7 +1,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom'
-import About from './Pages/About/About';
-import MainApp from './Pages/MainApp/MainApp';
+import Home from './Pages/Home/Home';
+import Dashboard from './Pages/Dashboard/Dashboard';
 import NotFound from './Pages/NotFound/NotFound';
 
 function App() {
@@ -15,8 +15,8 @@ function App() {
 function Content() {
   return (
     <Routes>
-      <Route path="/" element={<About />} />
-      <Route path="/main/*" element={<MainApp />} />
+      <Route path="/*" element={<Home />} />
+      <Route path="/dashboard/*" element={<Dashboard />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

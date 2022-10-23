@@ -1,54 +1,50 @@
 import { FileTextOutlined } from '@ant-design/icons';
-import { Menu } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import * as Style from './Style'
 
 const items = [
   {
+    label: <Style.Logo>Logo</Style.Logo>,
+    key: '/',
+  },
+  {
     label: "My Documnt",
     icon: <FileTextOutlined />,
-    key: '/main/mydoc',
+    key: '/dashboard/mydoc',
   },
   {
     label: "My Signature",
     icon: <FileTextOutlined />,
-    key: '/main/mysign',
+    key: '/dashboard/mysign',
   },
   {
     label: "Draft",
     icon: <FileTextOutlined />,
-    key: '/main/draft',
+    key: '/dashboard/draft',
   },
   {
     label: "Shared With Me",
     icon: <FileTextOutlined />,
-    key: '/main/sharedwithme',
+    key: '/dashboard/sharedwithme',
   },
   {
     label: "Settings",
     icon: <FileTextOutlined />,
-    key: '/main/settings',
+    key: '/dashboard/settings',
   },
   {
     label: "Deleted",
     icon: <FileTextOutlined />,
-    key: '/main/deleted',
+    key: '/dashboard/deleted',
   },
 ]
 
 const MyMenu = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate()
 
-  const Logo = () => {
-    return (
-      <Style.Logo
-        onClick={() => navigate("/")}
-      >
-        Logo
-      </Style.Logo>
-    )
-  }
+
   const onClick = (e) => {
     console.log('click ', e);
     navigate(e.key)
@@ -61,8 +57,9 @@ const MyMenu = () => {
         defaultOpenKeys={['sub1']}
         mode="inline"
         items={items}
+        inlineCollapsed={collapsed}
       />
-      <Logo />
+      {/* <Logo /> */}
     </>
   );
 };
