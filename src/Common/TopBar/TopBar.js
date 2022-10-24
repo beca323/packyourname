@@ -1,7 +1,10 @@
-import { ControlOutlined, DownOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons'
+import { DownOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Input } from 'antd'
 import React from 'react'
 import { Container } from './Style'
+import Icon from '@ant-design/icons';
+import { ReactComponent as IconPanel } from '../../Atoms/Icons/IconPanel.svg'
+
 
 export default function TopBar() {
   return (
@@ -9,7 +12,7 @@ export default function TopBar() {
       <Input
         prefix={<SearchOutlined style={{ color: '#026CAD' }} />}
         placeholder="Search File Name"
-        suffix={<ControlOutlined style={{ color: '#026CAD' }} />}
+        suffix={<Icon component={IconPanel} style={{fontSize: '1.6rem'}}/>}
         style={{ width: '300px' }} />
       <UserInfo />
     </Container>
