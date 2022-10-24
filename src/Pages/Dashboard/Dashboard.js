@@ -14,7 +14,7 @@ overflow: hidden;
 `
 
 const ContentContainer = styled.div`
-padding: 2rem;
+// padding: 2rem;
 `
 
 export default class Dashboard extends Component {
