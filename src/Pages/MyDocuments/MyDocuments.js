@@ -1,5 +1,6 @@
-import { Tabs } from 'antd'
+import { Button, Tabs } from 'antd'
 import React, { Component } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import AllDocs from './AllDocs/AllDocs'
 
@@ -15,7 +16,6 @@ export default class MyDocuments extends Component {
 
 const MyTabs = styled(Tabs)`
 .ant-tabs-nav-wrap{
-  padding: 0 2rem;
   height: 70px;
   .ant-tabs-tab{
     color: #7B7B7B;
@@ -60,6 +60,7 @@ const TabContent = [
 ]
 
 export function Overview() {
+  const navigate = useNavigate()
   const renderTab = (count, name) => {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
@@ -71,7 +72,7 @@ export function Overview() {
 
   }
   return (
-    <>
+    <div style={{display:'flex',justifyContent: 'space-between', alignItems:'center', padding: '0 2rem'}}>
       <MyTabs defaultActiveKey="1">
         {TabContent.map((tab) => {
           return (
@@ -81,6 +82,7 @@ export function Overview() {
           )
         })}
       </MyTabs>
-    </>
+      <Button onClick={()=>navigate('/quickstart')}>Upload</Button>
+    </div>
   )
 }
