@@ -4,6 +4,8 @@ import { useAtom } from "jotai";
 import { bgFileAtom } from "../../data";
 
 import { pdfjs } from "react-pdf";
+import { Input } from "antd";
+import { UploadFileComponent } from "../../Pages/QuickStart/QuickStart";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const canvasSize = 500;
@@ -91,13 +93,10 @@ const UploadFile = () => {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <div style={{ marginBottom: `1rem` }}>
-        上傳 Image:
-        <input type="file" onChange={handleUploadImage} />
-      </div>
+      <div style={{ display: 'flex' }}>上傳 PDF:</div>
       <div>
-        上傳 PDF:
-        <input accept=".pdf" type="file" onChange={handleUploadPdf} />
+        <Input accept=".pdf" type="file" onChange={handleUploadPdf} />
+        {/* <UploadFileComponent handleUploadPdf={handleUploadPdf} /> */}
       </div>
 
       <canvas ref={canvasRef} width={canvasSize} height={canvasSize}></canvas>

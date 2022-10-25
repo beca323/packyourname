@@ -26,39 +26,6 @@ const MyTabs = styled(Tabs)`
 }
 `
 
-const TabContent = [
-  {
-    key: "1",
-    count: 10,
-    name: "All Document",
-    render: () => <AllDocs />
-  },
-  {
-    key: "2",
-    count: 1,
-    name: "Important",
-    render: () => { <div>Important!!! </div> }
-  },
-  {
-    key: "3",
-    count: 2,
-    name: "To Do",
-    render: () => { <div>to do </div> }
-  },
-  {
-    key: "4",
-    count: 2,
-    name: "Finished",
-    render: () => { <div>to do </div> }
-  },
-  {
-    key: "5",
-    count: 12,
-    name: "Others",
-    render: () => { <div>to do </div> }
-  },
-]
-
 export function Overview() {
   const navigate = useNavigate()
   const renderTab = (count, name) => {
@@ -69,20 +36,41 @@ export function Overview() {
         <div>{name}</div>
       </div>
     )
-
   }
+
+
+  const TabContent = [
+    {
+      key: "1",
+      label: renderTab(10, "All Document"),
+      children: <AllDocs />
+    },
+    {
+      key: "2",
+      label: renderTab(1, "Important"),
+      children: <div> Important!!! </div>
+    },
+    {
+      key: "3",
+      label: renderTab(5, "To Do"),
+      children: <div> to do </div>
+    },
+    {
+      key: "4",
+      label: renderTab(3, "Finished"),
+      children: <div>to do </div>
+    },
+    {
+      key: "5",
+      label: renderTab(9, "Others"),
+      children: <div>to do </div>
+    },
+  ]
+
   return (
-    <div style={{display:'flex',justifyContent: 'space-between', alignItems:'center', padding: '0 2rem'}}>
-      <MyTabs defaultActiveKey="1">
-        {TabContent.map((tab) => {
-          return (
-            <Tabs.TabPane tab={renderTab(tab.count, tab.name)} key={tab.key}>
-              {tab.render()}
-            </Tabs.TabPane>
-          )
-        })}
-      </MyTabs>
-      <Button onClick={()=>navigate('/quickstart')}>Upload</Button>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 2rem' }}>
+      <MyTabs defaultActiveKey="1" items={TabContent} />
+      <Button onClick={() => navigate('/quickstart')}>Upload</Button>
     </div>
   )
 }
