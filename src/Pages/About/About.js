@@ -6,7 +6,7 @@ export default function Home() {
   const navigate = useNavigate()
   return (
     <>
-      <div>About</div>
+      <div>About~</div>
       <Button onClick={() => navigate('/dashboard/mydoc')} >Getting Start</Button>
     </>
   )
