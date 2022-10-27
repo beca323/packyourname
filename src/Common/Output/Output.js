@@ -44,12 +44,12 @@ const Output = () => {
     }
   }, [canvas, bgFileData]);
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleUserKeyPress);
-    return () => {
-      window.removeEventListener("keydown", handleUserKeyPress);
-    };
-  });
+  // useEffect(() => {
+  //   window.addEventListener("keydown", handleUserKeyPress);
+  //   return () => {
+  //     window.removeEventListener("keydown", handleUserKeyPress);
+  //   };
+  // });
 
   // . 縮放 */
   const scaleAndPositionImage = (bgImage) => {

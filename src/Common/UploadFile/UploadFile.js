@@ -6,6 +6,7 @@ import { bgFileAtom } from "../../data";
 
 import { pdfjs } from "react-pdf";
 import { Button } from "antd";
+import Dragger from "antd/lib/upload/Dragger";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const canvasSize = 500;
@@ -41,8 +42,11 @@ const UploadFile = () => {
   };
 
   /** pdf */
-  const handleUploadPdf = (event) => {
-    const file = event.target.files[0];
+  const handleUploadPdf = (file) => {
+    // const file = event.target.files[0];
+    // const file = event.fileList[0].originFileObj;
+    console.log("🚀 ~ file: UploadFile.js ~ line 52 ~ file", file);
+
     if (file.type !== "application/pdf") return;
     let fileReader = new FileReader();
     fileReader.onload = function () {
@@ -52,6 +56,7 @@ const UploadFile = () => {
       loadingTask.promise.then(
         function (pdf) {
           console.log("PDF loaded");
+          console.debug(`🎲 ~ file: UploadFile.js ~ line 59 ~ "PDF loaded"`, "PDF loaded");
           // Fetch the first page
           const pageNumber = 1;
           pdf.getPage(pageNumber).then(function (page) {
@@ -96,9 +101,10 @@ const UploadFile = () => {
         上傳 Image:
         <input type="file" onChange={handleUploadImage} />
       </div> */}
-      <div> 
+      <div>
         上傳 PDF:
-        <input accept=".pdf" type="file" onChange={handleUploadPdf} />
+        {/* <input accept=".pdf" type="file" onChange={(event) => handleUploadPdf(event.target.files[0])} /> */}
+        <UploadFileComponent onChange={(event) => handleUploadPdf(event.fileList[0].originFileObj)} />
       </div>
 
       <canvas ref={canvasRef} width={canvasSize} height={canvasSize} style={{ boxShadow: "0 0 10px #eeeeff" }}></canvas>
@@ -113,3 +119,22 @@ const UploadFile = () => {
 export default UploadFile;
 
 // https://mozilla.github.io/pdf.js/examples/index.html#interactive-examples
+
+
+const UploadFileComponent = (props) => {
+  return (
+    <Dragger
+      accept=".pdf"
+      onChange={(e) => props.onChange(e)}>
+      <p className="ant-upload-drag-icon">
+        <Button className='bg-primary'>
+          Choose File
+          <div style={{ opacity: "0.5" }}>pdf only</div>
+        </Button>
+      </p>
+      <p className="ant-upload-hint">
+        or drag to here
+      </p>
+    </Dragger>
+  );
+};

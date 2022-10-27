@@ -1,8 +1,8 @@
-import { Button, Tabs } from 'antd'
-import React, { Component } from 'react'
-import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
-import AllDocs from './AllDocs/AllDocs'
+import { Button, Tabs } from "antd";
+import React, { Component } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import AllDocs from "./AllDocs/AllDocs";
 
 export default class MyDocuments extends Component {
   render() {
@@ -10,7 +10,7 @@ export default class MyDocuments extends Component {
       <>
         <Overview />
       </>
-    )
+    );
   }
 }
 
@@ -24,19 +24,19 @@ const MyTabs = styled(Tabs)`
     color: #026CAD;
   }
 }
-`
+`;
 
 export function Overview() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const renderTab = (count, name) => {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+      <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
         <div style={{ opacity: 0 }}>.</div>
-        <div style={{ fontSize: '1.6rem', lineHeight: '1.5rem', fontWeight: 'bold' }}>{count}</div>
+        <div style={{ fontSize: "1.6rem", lineHeight: "1.5rem", fontWeight: "bold" }}>{count}</div>
         <div>{name}</div>
       </div>
-    )
-  }
+    );
+  };
 
 
   const TabContent = [
@@ -65,12 +65,12 @@ export function Overview() {
       label: renderTab(9, "Others"),
       children: <div>to do </div>
     },
-  ]
+  ];
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 2rem' }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 2rem" }}>
       <MyTabs defaultActiveKey="1" items={TabContent} />
-      <Button onClick={() => navigate('/quickstart')}>Upload</Button>
+      <Button onClick={() => navigate("/quickstart")}>Upload</Button>
     </div>
-  )
+  );
 }

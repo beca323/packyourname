@@ -1,5 +1,3 @@
-import { Button } from "antd";
-import Dragger from "antd/lib/upload/Dragger";
 import React from "react";
 import MyHeader from "../../Common/MyHeader/MyHeader";
 import Output from "../../Common/Output/Output";
@@ -29,21 +27,3 @@ export default function QuickStart() {
     </>
   );
 }
-
-export const UploadFileComponent = (props) => {
-  return (
-    <Dragger {...props}
-      accept=".pdf"
-      onChange={props.onChange}>
-      <p className="ant-upload-drag-icon">
-        <Button className='bg-primary'>
-          Choose File
-          <div style={{ opacity: "0.5" }}>pdf only</div>
-        </Button>
-      </p>
-      <p className="ant-upload-hint">
-        or drag to here
-      </p>
-    </Dragger>
-  );
-};

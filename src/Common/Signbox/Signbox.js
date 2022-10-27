@@ -6,7 +6,7 @@ import { useAtom } from "jotai";
 import { signAtom } from "../../data";
 import { Button } from "antd";
 
-const canvasSize = 500;
+const canvasSize = 400;
 
 const Signbox = () => {
   const canvasRef = useRef(null);

@@ -16,10 +16,7 @@
             "error",
             "always"
         ],
-        "quotes": [
-            "error",
-            "double"
-        ],
+        
         "no-unused-vars": "warn",
         "react/destructuring-assignment": 0,
         "react/sort-comp": 1,
