@@ -9,4 +9,4 @@ align-items: center;
 justify-content: space-between;
 height: 60px; 
 padding: 0 2rem;
-`
+`;

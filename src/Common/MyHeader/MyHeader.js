@@ -1,8 +1,8 @@
-import React from 'react'
-import * as Style from './Style'
+import React from "react";
+import * as Style from "./Style";
 
 export default function MyHeader(props) {
-  const { renderButtons } = props
+  const { renderButtons } = props;
   return (
     <Style.MyHeader>
       <div>Logo</div>
@@ -10,6 +10,6 @@ export default function MyHeader(props) {
         ? <div>{renderButtons()}</div> 
         : <div style={{opacity: 0}}>.</div>}
     </Style.MyHeader>
-  )
+  );
 }
 

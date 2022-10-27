@@ -1,11 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import getScaledDim from "../../utils/getScaledDim";
 import { useAtom } from "jotai";
 import { bgFileAtom } from "../../data";
 
 import { pdfjs } from "react-pdf";
-import { Input } from "antd";
-import { UploadFileComponent } from "../../Pages/QuickStart/QuickStart";
+import { Button } from "antd";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const canvasSize = 500;
@@ -43,45 +43,44 @@ const UploadFile = () => {
   /** pdf */
   const handleUploadPdf = (event) => {
     const file = event.target.files[0];
-    if (file.type === "application/pdf") {
-      let fileReader = new FileReader();
-      fileReader.onload = function () {
-        const pdfData = new Uint8Array(this.result);
-        // Using DocumentInitParameters object to load binary data.
-        const loadingTask = pdfjs.getDocument({ data: pdfData });
-        loadingTask.promise.then(
-          function (pdf) {
-            console.log("PDF loaded");
-            // Fetch the first page
-            const pageNumber = 1;
-            pdf.getPage(pageNumber).then(function (page) {
-              console.log("Page loaded");
+    if (file.type !== "application/pdf") return;
+    let fileReader = new FileReader();
+    fileReader.onload = function () {
+      const pdfData = new Uint8Array(this.result);
+      // Using DocumentInitParameters object to load binary data.
+      const loadingTask = pdfjs.getDocument({ data: pdfData });
+      loadingTask.promise.then(
+        function (pdf) {
+          console.log("PDF loaded");
+          // Fetch the first page
+          const pageNumber = 1;
+          pdf.getPage(pageNumber).then(function (page) {
+            console.log("Page loaded");
 
-              const scale = 1.5;
-              const viewport = page.getViewport({ scale: scale });
+            const scale = 1;
+            const viewport = page.getViewport({ scale: scale });
 
-              // Prepare canvas using PDF page dimensions
-              canvas.height = viewport.height;
-              canvas.width = viewport.width;
-              // Render PDF page into canvas context
-              const renderContext = {
-                canvasContext: ctx,
-                viewport: viewport
-              };
-              const renderTask = page.render(renderContext);
-              renderTask.promise.then(function () {
-                console.log("Page rendered");
-              });
+            // Prepare canvas using PDF page dimensions
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            // Render PDF page into canvas context
+            const renderContext = {
+              canvasContext: ctx,
+              viewport: viewport
+            };
+            const renderTask = page.render(renderContext);
+            renderTask.promise.then(function () {
+              console.log("Page rendered");
             });
-          },
-          function (reason) {
-            // PDF loading error
-            console.error(reason);
-          }
-        );
-      };
-      fileReader.readAsArrayBuffer(file);
-    }
+          });
+        },
+        function (reason) {
+          // PDF loading error
+          console.error(reason);
+        }
+      );
+    };
+    fileReader.readAsArrayBuffer(file);
   };
 
   /** 輸出成圖片 */
@@ -92,16 +91,19 @@ const UploadFile = () => {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <div style={{ display: 'flex' }}>上傳 PDF:</div>
-      <div>
-        <Input accept=".pdf" type="file" onChange={handleUploadPdf} />
-        {/* <UploadFileComponent handleUploadPdf={handleUploadPdf} /> */}
+    <div style={{ textAlign: "center", background: "#f9e8c9" }}>
+      {/* <div style={{ marginBottom: `1rem` }}>
+        上傳 Image:
+        <input type="file" onChange={handleUploadImage} />
+      </div> */}
+      <div> 
+        上傳 PDF:
+        <input accept=".pdf" type="file" onChange={handleUploadPdf} />
       </div>
 
-      <canvas ref={canvasRef} width={canvasSize} height={canvasSize}></canvas>
+      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} style={{ boxShadow: "0 0 10px #eeeeff" }}></canvas>
       <div>
-        <button onClick={handleConvertToImage}>輸出</button>
+        <Button onClick={handleConvertToImage}>輸出</Button>
       </div>
       {/* <img src={src} alt="imagePdf" /> */}
     </div>
