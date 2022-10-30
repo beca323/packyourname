@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAtom } from "jotai";
 import { bgFileAtom, signAtom } from "../../data";
-import { Wrapper, Main } from "./Style";
+import { Wrapper, Main, OutputCanvas } from "./Style";
 import { fabric } from "fabric";
 import { Button } from "antd";
+import jsPDF from "jspdf";
 
 const canvasOriginalHeight = 800;
 const canvasOriginalWidth = 800;
@@ -120,24 +121,29 @@ const Output = () => {
   // . 下載 */
   const download = () => {
     const dataURL = canvas.toDataURL({ format: "png" });
-    const link = document.createElement("a");
-    link.download = "my-image.png";
-    link.href = dataURL;
-    link.target = "_blank";
-    document.body.appendChild(link);
-    link.click();
-    link.parentNode.removeChild(link);
+    const pdf = new jsPDF();
+    pdf.addImage(dataURL, 'JPED', 0, 0);
+    pdf.save('file.pdf');
+
+    // const link = document.createElement("a");
+    // link.download = "my-image.png";
+    // link.href = dataURL;
+    // link.target = "_blank";
+    // document.body.appendChild(link);
+    // link.click();
+    // link.parentNode.removeChild(link);
+
   };
 
   return (
-    <Wrapper>
-      <div>
-        <Button onClick={download}>下載</Button>
-      </div>
+    <div>
+      <OutputCanvas>
+        <canvas ref={mainRef} style={{ boxShadow: '0 0 10px #eee' }}></canvas>
+      </OutputCanvas>
       <Main>
-        <canvas ref={mainRef} style={{ border: "1px solid #ccc" }}></canvas>
       </Main>
-    </Wrapper>
+      <Button onClick={download}>下載</Button>
+    </div>
   );
 };
 

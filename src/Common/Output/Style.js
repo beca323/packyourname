@@ -21,6 +21,14 @@ const Main = styled("div")`
   }
 `;
 
+export const OutputCanvas = styled('div')`
+> .canvas-container{
+  > .upper-canvas{
+    display: none;
+  }
+}
+`;
+
 const Canvas = styled.canvas`
   position: absolute;
   left: 0;

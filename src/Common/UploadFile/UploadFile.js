@@ -5,17 +5,19 @@ import { useAtom } from "jotai";
 import { bgFileAtom } from "../../data";
 
 import { pdfjs } from "react-pdf";
-import { Button } from "antd";
-import Dragger from "antd/lib/upload/Dragger";
+import { Button, Input, message, Modal } from "antd";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const canvasSize = 500;
+const canvasSize = 0;
+// const canvasSize = 500;
 
 const UploadFile = () => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
   const [src, setSrc] = useState(null);
+  const [fileName, setFileName] = useState('');
+  const isRendered = useRef(false);
 
   const [bgFileData, setBgFileData] = useAtom(bgFileAtom);
 
@@ -43,32 +45,29 @@ const UploadFile = () => {
 
   /** pdf */
   const handleUploadPdf = (file) => {
-    // const file = event.target.files[0];
-    // const file = event.fileList[0].originFileObj;
-    console.log("🚀 ~ file: UploadFile.js ~ line 52 ~ file", file);
-
-    if (file.type !== "application/pdf") return;
+    // if (isRendered.current) return;
+    console.log("🎲 ~ file: UploadFile.js ~ line 52 ~ file", file);
+    setFileName(file.name);
+    isRendered.current = true;
+    // if (file.type !== "application/pdf") return;
     let fileReader = new FileReader();
     fileReader.onload = function () {
       const pdfData = new Uint8Array(this.result);
-      // Using DocumentInitParameters object to load binary data.
+      //? Using DocumentInitParameters object to load binary data.
       const loadingTask = pdfjs.getDocument({ data: pdfData });
       loadingTask.promise.then(
         function (pdf) {
-          console.log("PDF loaded");
-          console.debug(`🎲 ~ file: UploadFile.js ~ line 59 ~ "PDF loaded"`, "PDF loaded");
-          // Fetch the first page
+          //? Fetch the first page
           const pageNumber = 1;
           pdf.getPage(pageNumber).then(function (page) {
-            console.log("Page loaded");
-
             const scale = 1;
-            const viewport = page.getViewport({ scale: scale });
+            const viewport = page.getViewport({ scale });
 
-            // Prepare canvas using PDF page dimensions
+            //? Prepare canvas using PDF page dimensions
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-            // Render PDF page into canvas context
+
+            //? Render PDF page into canvas context
             const renderContext = {
               canvasContext: ctx,
               viewport: viewport
@@ -96,45 +95,45 @@ const UploadFile = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", background: "#f9e8c9" }}>
-      {/* <div style={{ marginBottom: `1rem` }}>
+    <>
+      <div style={{ textAlign: "center", position: 'relative', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {/* <div style={{ marginBottom: `1rem` }}>
         上傳 Image:
         <input type="file" onChange={handleUploadImage} />
       </div> */}
-      <div>
-        上傳 PDF:
-        {/* <input accept=".pdf" type="file" onChange={(event) => handleUploadPdf(event.target.files[0])} /> */}
-        <UploadFileComponent onChange={(event) => handleUploadPdf(event.fileList[0].originFileObj)} />
-      </div>
+        <div>
+          <div
+            className="c-primary"
+            style={{
+              border: '2px dashed currentColor', position: 'absolute',
+              width: '100%', height: '200px', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
+            }}>
+            <Button className="bg-primary" style={{ fontSize: '1.3rem', height: 'fit-content' }}>
+              <span>Choose Files</span> &emsp;
+              <span style={{ opacity: '0.6' }}>pdf only</span>
+            </Button>
+            <div>
+              {fileName ? fileName : 'or drag to here'}
+            </div>
+          </div>
+          <div style={{ width: '100%' }}>
+            <Input
+              style={{ height: '200px', opacity: '0', cursor: 'pointer', }}
+              accept=".pdf" type="file" onChange={(event) => handleUploadPdf(event.target.files[0])} />
+          </div>
+        </div>
+        <div>
+          <Button onClick={handleConvertToImage} disabled={!fileName}>下一步</Button>
+        </div>
 
-      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} style={{ boxShadow: "0 0 10px #eeeeff" }}></canvas>
-      <div>
-        <Button onClick={handleConvertToImage}>輸出</Button>
+        {/* <img src={src} alt="imagePdf" /> */}
       </div>
-      {/* <img src={src} alt="imagePdf" /> */}
-    </div>
+      {/* 預覽 */}
+      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} style={{ boxShadow: "0 0 10px #eeeeff" }}></canvas>
+    </>
   );
 };
 
 export default UploadFile;
 
 // https://mozilla.github.io/pdf.js/examples/index.html#interactive-examples
-
-
-const UploadFileComponent = (props) => {
-  return (
-    <Dragger
-      accept=".pdf"
-      onChange={(e) => props.onChange(e)}>
-      <p className="ant-upload-drag-icon">
-        <Button className='bg-primary'>
-          Choose File
-          <div style={{ opacity: "0.5" }}>pdf only</div>
-        </Button>
-      </p>
-      <p className="ant-upload-hint">
-        or drag to here
-      </p>
-    </Dragger>
-  );
-};

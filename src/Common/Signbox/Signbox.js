@@ -8,7 +8,7 @@ import { Button } from "antd";
 
 const canvasSize = 400;
 
-const Signbox = () => {
+const Signbox = (props) => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
@@ -22,8 +22,6 @@ const Signbox = () => {
   useEffect(() => {
 
     const c = canvasRef.current;
-    console.debug("🙈 · useEffect · canvasRef.current", canvasRef.current);
-
     setCanvas(c);
     if (c) setCtx(c.getContext("2d"));
   }, [canvasRef]);
@@ -90,6 +88,7 @@ const Signbox = () => {
     setSignData(image);
     setSrc(image);
     setSuccessMsg("done");
+    props.onOk();
   };
 
   return (
@@ -106,7 +105,7 @@ const Signbox = () => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       ></canvas>
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button onClick={handleClear}>清除</Button>
         <Button onClick={handleConvertToImage}>完成</Button>
       </div>
