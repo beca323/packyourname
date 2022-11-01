@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <div>About</div>
-      <Button onClick={() => navigate("/dashboard/mydoc")} >Getting Start</Button>
+      <Button onClick={() => navigate("/quickstart")} >Getting Start</Button>
     </>
   );
 }
