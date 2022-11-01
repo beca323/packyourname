@@ -47,20 +47,7 @@ export default function QuickStart() {
     );
   };
 
-  const steps = [
-    {
-      title: 'Upload',
-      content: 'First-content',
-    },
-    {
-      title: 'Sign',
-      content: 'Second-content',
-    },
-    {
-      title: 'Review',
-      content: 'Last-content',
-    },
-  ];
+  const steps = [{ title: 'Upload', }, { title: 'Sign', }, { title: 'Review' },];
   return (
     <>
       <MyHeader renderButtons={HeaderButton} />
@@ -75,7 +62,7 @@ export default function QuickStart() {
         <section>
           <Style.SectionContainer>
             <h1 className='c-primary'>Upload New Document</h1>
-            <div style={{ margin: "auto", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div style={{ margin: "auto", display: "flex", flexDirection: "column", gap: "2.5rem" }}>
               <Style.SubSection>
                 <div style={{ display: "flex" }}>Document Info</div>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>

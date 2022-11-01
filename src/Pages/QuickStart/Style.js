@@ -40,4 +40,7 @@ export const SectionContainer = styled.div`
 
 
 export const SubSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
