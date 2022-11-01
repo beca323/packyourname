@@ -26,7 +26,7 @@ export const MyMenu = styled(Menu)`
   .ant-menu-vertical .ant-menu-item::after, .ant-menu-vertical-left .ant-menu-item::after, .ant-menu-vertical-right .ant-menu-item::after, .ant-menu-inline .ant-menu-item::after{
     border-right: 0px solid #fff !important;
   }
-`
+`;
 
 export const Logo = styled.div`
 background: none;
@@ -39,4 +39,4 @@ color: #fff;
 font-size: 2rem;
 font-weight: bold;
 cursor: pointer;
-`
+`;

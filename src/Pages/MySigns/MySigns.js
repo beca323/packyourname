@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import MyMenu from '../../Common/MyMenu/MyMenu'
+import React, { Component } from "react";
 
 export default class MySigns extends Component {
   render() {
@@ -7,6 +6,6 @@ export default class MySigns extends Component {
       <>
         <div>MySigns</div>
       </>
-    )
+    );
   }
 }
