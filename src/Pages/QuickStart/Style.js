@@ -7,9 +7,11 @@ display: flex;
 overflow: hidden;
 > section{
   transition: 0.5s all ease;
+  padding-top: 60px;
   transform: translateX(${props => props.count * -100}vw);
   min-width: 100vw;
   height: 100vh;
+  overflow: auto;
 }
 `;
 
@@ -36,6 +38,7 @@ export const SectionContainer = styled.div`
   margin: 3rem auto;
   max-width: 800px;
   background: #fff;
+  transition: all .5s ease;
 `;
 
 

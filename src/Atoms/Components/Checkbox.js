@@ -8,7 +8,7 @@ const CheckboxStyle = styled.button`
   border: 1px solid #026CAD;
   color: ${props => props.checked ? '#FFF' : '#E8E8E8'} ;
   background: ${props => props.checked ? '#12C696' : 'none'} ;
-  width: 2.4rem;
+  width: 2rem;
   height: 2rem;
 `;
 
