@@ -2,15 +2,14 @@ import { Steps } from 'antd';
 import styled from 'styled-components';
 
 export const QuickStartPagesContainer = styled.div`
-height: 100vh;
+// height: 100vh;
 display: flex;
-overflow: hidden;
+// overflow: hidden;
 > section{
   transition: 0.5s all ease;
-  padding-top: 60px;
   transform: translateX(${props => props.count * -100}vw);
   min-width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   overflow: auto;
 }
 `;

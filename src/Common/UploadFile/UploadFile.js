@@ -11,7 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const canvasSize = 0;
 // const canvasSize = 500;
 
-const UploadFile = () => {
+const UploadFile = (props) => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
@@ -60,7 +60,7 @@ const UploadFile = () => {
           //? Fetch the first page
           const pageNumber = 1;
           pdf.getPage(pageNumber).then(function (page) {
-            const scale = 1;
+            const scale = 1.5;
             const viewport = page.getViewport({ scale });
 
             //? Prepare canvas using PDF page dimensions
@@ -94,6 +94,12 @@ const UploadFile = () => {
     setSrc(image);
   };
 
+  useEffect(() => {
+    if (props.pageCount === 1) {
+      handleConvertToImage();
+    }
+  }, [props.pageCount]);
+
   return (
     <>
       <div style={{ textAlign: "center", position: 'relative', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -122,14 +128,14 @@ const UploadFile = () => {
               accept=".pdf" type="file" onChange={(event) => handleUploadPdf(event.target.files[0])} />
           </div>
         </div>
-        <div>
+        {/* <div>
           <Button onClick={handleConvertToImage} disabled={!fileName}>下一步</Button>
-        </div>
+        </div> */}
 
         {/* <img src={src} alt="imagePdf" /> */}
       </div>
       {/* 預覽 */}
-      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} style={{ boxShadow: "0 0 10px #eeeeff" }}></canvas>
+      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} style={{ boxShadow: "0 0 10px #eeeeff", display: 'none' }}></canvas>
     </>
   );
 };
