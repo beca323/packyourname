@@ -92,7 +92,7 @@ const Signbox = (props) => {
   };
 
   return (
-    <div>
+    <>
       <canvas
         style={{ background: "#EEE" }}
         ref={canvasRef}
@@ -119,7 +119,7 @@ const Signbox = (props) => {
           style={{ color: "#FFF", border: "none" }}
         />
       )} */}
-    </div>
+    </>
   );
 };
 

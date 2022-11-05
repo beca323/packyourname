@@ -1,23 +1,20 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Steps } from "antd";
-import Modal from "antd/lib/modal/Modal";
 import React, { useRef, useState } from "react";
 import MyHeader from "../../Common/MyHeader/MyHeader";
-import Output from "../../Common/Output/Output";
-import Signbox from "../../Common/Signbox/Signbox";
-import UploadFile from "../../Common/UploadFile/UploadFile";
-import Checkbox from "../../Atoms/Components/Checkbox";
 import * as Style from "./Style";
 import useOnScreen from "../../Hooks/useOnScreen/useOnScreen";
-import { CheckboxContainer } from "../../Style";
 import UploadNewDocument from "./UploadNewDocument";
+import SignDocument from "./SignDocument";
+import { MyButton } from "../../Atoms/Components/Button";
+import { useForm } from "antd/lib/form/Form";
 
 const totalSectionCount = 3;
 export default function QuickStart() {
   const headerTwoRef = useRef();
   const visible = useOnScreen(headerTwoRef, "-150px");
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [pageCount, setPageCount] = useState(0);
+  const [form] = useForm();
 
   const handleClickNext = () => {
     if (pageCount >= totalSectionCount - 1) return;
@@ -32,34 +29,47 @@ export default function QuickStart() {
     return (
       <>
         {pageCount !== 0 &&
-          <Button className="bg-primary" onClick={handleClickBack} style={{ border: 'none', margin: '0 0.5rem' }}>
-            <ArrowLeftOutlined />Back
-          </Button>
+          <MyButton className="bg-primary" onClick={handleClickBack} style={{ border: 'none', margin: '0 0.5rem' }}>
+            <ArrowLeftOutlined />
+            Back
+          </MyButton>
         }
         {pageCount !== totalSectionCount - 1 &&
-          <Button className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
+          <MyButton disabled={form.getFieldValue('newFileName') === null} className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
             Next
             <ArrowRightOutlined />
-          </Button>
+          </MyButton>
         }
         {
           pageCount === totalSectionCount - 1 &&
-          <Button className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
+          <MyButton className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
             Done
-          </Button>
+          </MyButton>
         }
       </>
     );
   };
 
-  const steps = [{ title: 'Upload' }, { title: 'Sign', }, { title: 'Review' },];
+  const INIT_FORM_VALUE = {
+    fileName: null,
+    newfileName: null,
+    myself: true,
+    assignOthers: false,
+    user: {
+      email: '111@gmail.com'
+    }
+  };
+
+  const steps = [{ title: 'Upload', stepTitle: 'Upload New Document' }, { title: 'Sign', stepTitle: 'Sign' }, { title: 'Review', stepTitle: 'Review' },];
   return (
     <>
       <MyHeader renderButtons={HeaderButton} />
       <div style={{ height: '100vh' }}>
-        <Form>
+        <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
+          console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
+        }}>
           <div style={{ display: 'flex', background: visible ? 'none' : '#fff', position: visible ? 'relative' : 'fixed', width: '100%', zIndex: 1, transition: '0.1s all ease', padding: '0 1rem' }} >
-            {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">Upload New Document</h2>}
+            {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
             <div style={{ width: '80%', maxWidth: '500px', margin: '1rem auto' }}>
               <Style.MySteps current={pageCount}>
                 {steps.map((item) => (
@@ -69,31 +79,17 @@ export default function QuickStart() {
             </div>
           </div>
           <Style.QuickStartPagesContainer count={pageCount}>
-            <UploadNewDocument headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <UploadNewDocument form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <SignDocument form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
             <section>
               <Style.SectionContainer style={{ background: visible ? '#fff' : 'none' }}>
                 <div style={{ padding: "2% 4%", margin: '3rem auto', maxWidth: '800px', background: '#fff' }}>
-                  <h1 className='c-primary'>Sign</h1>
-                  <Button onClick={() => setIsModalVisible(true)}>Sign</Button>
-                  <Modal
-                    open={isModalVisible}
-                    onCancel={() => setIsModalVisible(false)}
-                    onOk={() => setIsModalVisible(false)}
-                    footer={null}
-                  >
-                    <Signbox onOk={() => setIsModalVisible(false)} />
-                  </Modal>
-                  <Output />
+                  <h1 className='c-primary'>Review</h1>
                 </div>
               </Style.SectionContainer>
             </section>
-            <section>
-              <div style={{ padding: "2% 4%", margin: '3rem auto', maxWidth: '800px', background: '#fff' }}>
-                <h1 className='c-primary'>Review</h1>
-                <Output />
-              </div>
-            </section>
+
           </Style.QuickStartPagesContainer>
         </Form>
       </div>

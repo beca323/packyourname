@@ -21,17 +21,24 @@ function Checkbox(props) {
     props.onClick(!value);
   };
 
+  const handleChange = (value) => {
+    const { onChange } = props;
+    onChange(value);
+  };
+
   return (
-    <CheckboxStyle checked={value} onClick={handleClick}><CheckOutlined /></CheckboxStyle>
+    <CheckboxStyle checked={value} onClick={handleClick} onChange={handleChange}><CheckOutlined /></CheckboxStyle>
   );
 }
 
 Checkbox.protoTypes = {
   defaultValue: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 Checkbox.defaultProps = {
   defaultValue: false,
+  onClick: () => { },
 };
 
 export default Checkbox;
