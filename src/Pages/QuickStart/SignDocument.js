@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Icon from "@ant-design/icons";
 import Output from '../../Common/Output/Output';
 import Signbox from '../../Common/Signbox/Signbox';
+import Textbox from '../../Common/Signbox/Textbox';
 import { ReactComponent as Sign } from "../../Atoms/Icons/Sign.svg";
 import { ReactComponent as Text } from "../../Atoms/Icons/Text.svg";
 import { ReactComponent as Date } from "../../Atoms/Icons/Date.svg";
@@ -12,14 +13,16 @@ import * as Style from "./Style";
 
 export default function SignDocument(props) {
   const [isSignModalVisible, setIsSignModalVisible] = useState(false);
+  const [isTextModalVisible, setIsTextModalVisible] = useState(false);
   const [isEditFileName, setIsEditFileName] = useState(false);
-  const { visible, form } = props;
+  const { visible, form, headerTwoRef } = props;
   return (
     <section>
-      <SignTools setIsSignModalVisible={setIsSignModalVisible} />
+      <SignTools setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} />
       <Style.SectionContainer style={{ background: 'none' }}>
         <div>
           <h1 className='c-primary'>Sign</h1>
+          <div ref={headerTwoRef}></div>
           {isEditFileName
             ? (
               <Row typeof='flex' justify='center' alignItems='center'>
@@ -35,6 +38,7 @@ export default function SignDocument(props) {
             ) : (
               <h2 className='c-primary' style={{ alignItems: 'center' }}>{form.getFieldValue('newFileName')} <EditOutlined onClick={() => setIsEditFileName(!isEditFileName)} style={{ cursor: 'pointer' }} /></h2>
             )}
+          <Output toDownload={props.toDownload} />
           <Modal
             open={isSignModalVisible}
             onCancel={() => setIsSignModalVisible(false)}
@@ -45,7 +49,16 @@ export default function SignDocument(props) {
           >
             <Signbox onOk={() => setIsSignModalVisible(false)} />
           </Modal>
-          <Output toDownload={props.toDownload} />
+          <Modal
+            open={isTextModalVisible}
+            onCancel={() => setIsTextModalVisible(false)}
+            onOk={() => setIsTextModalVisible(false)}
+            title={<h2 className="c-primary">輸入文字</h2>}
+            footer={null}
+            mask
+          >
+            <Textbox onOk={() => setIsTextModalVisible(false)} />
+          </Modal>
         </div>
       </Style.SectionContainer>
     </section>
@@ -53,14 +66,14 @@ export default function SignDocument(props) {
 }
 
 export function SignTools(props) {
-  const { setIsSignModalVisible } = props;
+  const { setIsSignModalVisible, setIsTextModalVisible } = props;
   return (
     <Style.SignTools>
       <div className='tool' onClick={() => setIsSignModalVisible(true)}>
         <Icon component={Sign} />
         <div style={{ color: '#1C4F6D' }}>Sign</div>
       </div>
-      <div className='tool'>
+      <div className='tool' onClick={() => setIsTextModalVisible(true)}>
         <Icon component={Text} />
         <div style={{ color: '#1C4F6D' }}>Text</div>
       </div>

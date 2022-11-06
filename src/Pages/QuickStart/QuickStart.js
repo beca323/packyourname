@@ -8,7 +8,6 @@ import UploadNewDocument from "./UploadNewDocument";
 import SignDocument from "./SignDocument";
 import { MyButton } from "../../Atoms/Components/Button";
 import { useForm } from "antd/lib/form/Form";
-import Output from "../../Common/Output/Output";
 
 const totalSectionCount = 3;
 export default function QuickStart() {
@@ -73,7 +72,7 @@ export default function QuickStart() {
         <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
           console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
         }}>
-          <div style={{ display: 'flex', background: visible && pageCount === 0 ? 'none' : '#fff', position: visible ? 'relative' : 'fixed', width: '100%', zIndex: 1, transition: '0.1s all ease', padding: '0 1rem' }} >
+          <div style={{ display: 'flex', background: (visible || pageCount !== 0) ? '#F5F9FA' : '#fff', position: (visible && pageCount === 0) ? 'relative' : 'fixed', width: '100%', zIndex: 1, transition: '0.1s all ease', padding: '0 1rem' }} >
             {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
             <div style={{ width: '80%', maxWidth: '500px', margin: '1rem auto' }}>
               <Style.MySteps current={pageCount}>

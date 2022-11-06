@@ -3,12 +3,12 @@ import getTouchPos from "../../utils/getTouchPos";
 import getMousePos from "../../utils/getMousePos";
 import { useAtom } from "jotai";
 import { signAtom } from "../../data";
-import { Button, Radio } from "antd";
+import { Button, Input, Radio } from "antd";
 import * as Style from "./Style";
 
 const canvasSize = 470;
 
-const Textbox = (props) => {
+const Signbox = (props) => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
@@ -106,23 +106,7 @@ const Textbox = (props) => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       ></canvas>
-      <Style.ColorPickerContainer>
-        <Radio.Group defaultValue={drawColor} onChange={(e) => { setDrawColor(e.target.value); }}>
-          <Radio value={"#000"}>
-            <Style.Color color="#000" />
-          </Radio>
-          <Radio value={"#ff0606"}>
-            <Style.Color color="#FF0606" />
-          </Radio>
-          <Radio value={"#0047ff"}>
-            <Style.Color color="#0047FF" />
-          </Radio>
-        </Radio.Group>
-      </Style.ColorPickerContainer>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button onClick={handleClear}>清除</Button>
-        <Button onClick={handleConvertToImage}>完成</Button>
-      </div>
+      <Input />
 
       {/* {src && (
         <img
@@ -135,6 +119,6 @@ const Textbox = (props) => {
   );
 };
 
-export default Textbox;
+export default Signbox;
 
 // https://codepen.io/albee/pen/ZPjygx
