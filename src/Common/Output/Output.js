@@ -6,10 +6,10 @@ import { fabric } from "fabric";
 import { Button } from "antd";
 import jsPDF from "jspdf";
 
-const canvasOriginalHeight = 800;
+const canvasOriginalHeight = 1200;
 const canvasOriginalWidth = 800;
 
-const Output = () => {
+const Output = (props) => {
   const [signData] = useAtom(signAtom);
   const [bgFileData] = useAtom(bgFileAtom);
 
@@ -27,7 +27,7 @@ const Output = () => {
     if (canvas && signData) {
       fabric.Image.fromURL(signData, (img) => {
         img.scaleToWidth(100);
-        img.scaleToHeight(100);
+        img.scaleToHeight(150);
         canvas.add(img).renderAll();
       });
     }
@@ -44,6 +44,12 @@ const Output = () => {
       });
     }
   }, [canvas, bgFileData]);
+
+  useEffect(() => {
+    const { toDownload } = props;
+    if (!toDownload) return;
+    download();
+  }, [props.toDownload]);
 
   // useEffect(() => {
   //   window.addEventListener("keydown", handleUserKeyPress);
@@ -136,14 +142,12 @@ const Output = () => {
   };
 
   return (
-    <div>
+    <>
       <OutputCanvas>
-        <canvas ref={mainRef} style={{ boxShadow: '0 0 10px #eee' }}></canvas>
+        <canvas ref={mainRef} style={{ margin: '1rem' }}></canvas>
       </OutputCanvas>
-      <Main>
-      </Main>
-      <Button onClick={download}>下載</Button>
-    </div>
+      <Button onClick={download} style={{ display: 'none' }}>下載</Button>
+    </>
   );
 };
 

@@ -46,3 +46,24 @@ export const SubSection = styled.div`
   flex-direction: column;
   gap: 1rem;
 `;
+
+export const SignTools = styled.div`
+z-index: 2;
+position: absolute;
+right: 0;
+top: 30%;
+padding: 0 1rem;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+background: #fff;
+border-radius: 10px 0 0 10px;
+svg{
+  font-size: 2rem;
+  fill: #fff;
+}
+.tool{
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem auto;
+}
+`;

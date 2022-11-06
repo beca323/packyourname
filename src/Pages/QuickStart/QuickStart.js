@@ -8,12 +8,14 @@ import UploadNewDocument from "./UploadNewDocument";
 import SignDocument from "./SignDocument";
 import { MyButton } from "../../Atoms/Components/Button";
 import { useForm } from "antd/lib/form/Form";
+import Output from "../../Common/Output/Output";
 
 const totalSectionCount = 3;
 export default function QuickStart() {
   const headerTwoRef = useRef();
   const visible = useOnScreen(headerTwoRef, "-150px");
   const [pageCount, setPageCount] = useState(0);
+  const [toDownload, setToDownload] = useState(false);
   const [form] = useForm();
 
   const handleClickNext = () => {
@@ -23,6 +25,9 @@ export default function QuickStart() {
   const handleClickBack = () => {
     if (pageCount === 0) return;
     setPageCount((prev) => prev - 1);
+  };
+  const handleClickDone = () => {
+    setToDownload(true);
   };
 
   const HeaderButton = () => {
@@ -42,7 +47,7 @@ export default function QuickStart() {
         }
         {
           pageCount === totalSectionCount - 1 &&
-          <MyButton className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
+          <MyButton className="bg-primary" onClick={handleClickDone} style={{ border: 'none', margin: '0 0.5rem' }}>
             Done
           </MyButton>
         }
@@ -56,7 +61,7 @@ export default function QuickStart() {
     myself: true,
     assignOthers: false,
     user: {
-      email: '111@gmail.com'
+      email: ''
     }
   };
 
@@ -68,7 +73,7 @@ export default function QuickStart() {
         <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
           console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
         }}>
-          <div style={{ display: 'flex', background: visible ? 'none' : '#fff', position: visible ? 'relative' : 'fixed', width: '100%', zIndex: 1, transition: '0.1s all ease', padding: '0 1rem' }} >
+          <div style={{ display: 'flex', background: visible && pageCount === 0 ? 'none' : '#fff', position: visible ? 'relative' : 'fixed', width: '100%', zIndex: 1, transition: '0.1s all ease', padding: '0 1rem' }} >
             {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
             <div style={{ width: '80%', maxWidth: '500px', margin: '1rem auto' }}>
               <Style.MySteps current={pageCount}>
@@ -80,11 +85,11 @@ export default function QuickStart() {
           </div>
           <Style.QuickStartPagesContainer count={pageCount}>
             <UploadNewDocument form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
-            <SignDocument form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <SignDocument form={form} toDownload={toDownload} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
             <section>
               <Style.SectionContainer style={{ background: visible ? '#fff' : 'none' }}>
-                <div style={{ padding: "2% 4%", margin: '3rem auto', maxWidth: '800px', background: '#fff' }}>
+                <div style={{ margin: '1rem auto', maxWidth: '800px' }}>
                   <h1 className='c-primary'>Review</h1>
                 </div>
               </Style.SectionContainer>

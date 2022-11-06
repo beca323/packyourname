@@ -22,7 +22,7 @@ const Main = styled("div")`
 `;
 
 export const OutputCanvas = styled('div')`
-transform: scale(0.7);
+transform: scale(0.5);
 > .canvas-container{
   > .upper-canvas{
     display: none;

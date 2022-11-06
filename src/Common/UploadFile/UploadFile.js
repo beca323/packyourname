@@ -73,7 +73,7 @@ const UploadFile = (props) => {
           //? Fetch the first page
           const pageNumber = 1;
           pdf.getPage(pageNumber).then(function (page) {
-            const scale = 1.5;
+            const scale = 1.3;
             const viewport = page.getViewport({ scale });
 
             //? Prepare canvas using PDF page dimensions
