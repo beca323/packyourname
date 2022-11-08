@@ -3,12 +3,12 @@ import getTouchPos from "../../utils/getTouchPos";
 import getMousePos from "../../utils/getMousePos";
 import { useAtom } from "jotai";
 import { signAtom } from "../../data";
-import { Button, Input, Radio } from "antd";
+import { Button, Input } from "antd";
 import * as Style from "./Style";
 
-const canvasSize = 470;
+const canvasSize = 140;
 
-const Signbox = (props) => {
+const Textbox = (props) => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
@@ -16,11 +16,9 @@ const Signbox = (props) => {
   const [drawing, setDrawing] = useState(false);
   const [_, setSignData] = useAtom(signAtom);
   const [drawColor, setDrawColor] = useState('#000');
-
-
+  const [inputText, setInputText] = useState('');
 
   useEffect(() => {
-
     const c = canvasRef.current;
     setCanvas(c);
     if (c) setCtx(c.getContext("2d"));
@@ -88,25 +86,29 @@ const Signbox = (props) => {
   const handleConvertToImage = () => {
     const image = canvas.toDataURL();
     setSignData(image);
-    setSrc(image);
+    // setSrc(image);
+    props.onOk();
+  };
+
+  const handleSave = () => {
+    ctx.font = '30px Comic Sans MS';
+    ctx.textAlign = 'center';
+    ctx.fillText(inputText, canvasSize / 2, canvasSize / 4);
+    handleConvertToImage();
     props.onOk();
   };
 
   return (
     <>
       <canvas
-        style={{ border: '1px solid #A6A6A6', borderRadius: '8px' }}
+        style={{ display: 'none' }}
         ref={canvasRef}
         width={canvasSize}
-        height={canvasSize * 0.6}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
+        height={canvasSize * 0.4}
       ></canvas>
-      <Input />
+      <Input onChange={(e) => setInputText(e.target.value)} />
+      <Button onClick={props.onCancel}>Cancel</Button>
+      <Button onClick={handleSave}>OK</Button>
 
       {/* {src && (
         <img
@@ -119,6 +121,6 @@ const Signbox = (props) => {
   );
 };
 
-export default Signbox;
+export default Textbox;
 
 // https://codepen.io/albee/pen/ZPjygx

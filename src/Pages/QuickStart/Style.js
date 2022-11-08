@@ -1,4 +1,4 @@
-import { Steps } from 'antd';
+import { Modal, Steps } from 'antd';
 import styled from 'styled-components';
 
 export const QuickStartPagesContainer = styled.div`
@@ -33,6 +33,7 @@ export const MySteps = styled(Steps)`
 `;
 
 export const SectionContainer = styled.div`
+  height: 150vh;
   padding: 2% 4%;
   margin: 3rem auto;
   max-width: 800px;
@@ -51,7 +52,7 @@ export const SignTools = styled.div`
 z-index: 2;
 position: absolute;
 right: 0;
-top: 30%;
+top: 30vh;
 padding: 0 1rem;
 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 background: #fff;
@@ -65,5 +66,10 @@ svg{
   display: flex;
   flex-direction: column;
   margin: 1rem auto;
+}
+`;
+export const DateModal = styled(Modal)`
+.ant-modal-close-x{
+  display: none;
 }
 `;

@@ -5,6 +5,7 @@ import Icon from "@ant-design/icons";
 import Output from '../../Common/Output/Output';
 import Signbox from '../../Common/Signbox/Signbox';
 import Textbox from '../../Common/Signbox/Textbox';
+import Datebox from '../../Common/Signbox/Datebox';
 import { ReactComponent as Sign } from "../../Atoms/Icons/Sign.svg";
 import { ReactComponent as Text } from "../../Atoms/Icons/Text.svg";
 import { ReactComponent as Date } from "../../Atoms/Icons/Date.svg";
@@ -14,11 +15,12 @@ import * as Style from "./Style";
 export default function SignDocument(props) {
   const [isSignModalVisible, setIsSignModalVisible] = useState(false);
   const [isTextModalVisible, setIsTextModalVisible] = useState(false);
+  const [isDateModalVisible, setIsDateModalVisible] = useState(false);
   const [isEditFileName, setIsEditFileName] = useState(false);
-  const { visible, form, headerTwoRef } = props;
+  const { form, headerTwoRef } = props;
   return (
     <section>
-      <SignTools setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} />
+      <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} />
       <Style.SectionContainer style={{ background: 'none' }}>
         <div>
           <h1 className='c-primary'>Sign</h1>
@@ -57,8 +59,17 @@ export default function SignDocument(props) {
             footer={null}
             mask
           >
-            <Textbox onOk={() => setIsTextModalVisible(false)} />
+            <Textbox onOk={() => setIsTextModalVisible(false)} onCancel={() => setIsTextModalVisible(false)} />
           </Modal>
+          <Style.DateModal
+            open={isDateModalVisible}
+            onCancel={() => setIsDateModalVisible(false)}
+            onOk={() => setIsDateModalVisible(false)}
+            footer={null}
+            mask
+          >
+            <Datebox onOk={() => setIsDateModalVisible(false)} onCancel={() => setIsDateModalVisible(false)} />
+          </Style.DateModal>
         </div>
       </Style.SectionContainer>
     </section>
@@ -66,7 +77,7 @@ export default function SignDocument(props) {
 }
 
 export function SignTools(props) {
-  const { setIsSignModalVisible, setIsTextModalVisible } = props;
+  const { setIsSignModalVisible, setIsTextModalVisible, setIsDateModalVisible } = props;
   return (
     <Style.SignTools>
       <div className='tool' onClick={() => setIsSignModalVisible(true)}>
@@ -77,7 +88,7 @@ export function SignTools(props) {
         <Icon component={Text} />
         <div style={{ color: '#1C4F6D' }}>Text</div>
       </div>
-      <div className='tool'>
+      <div className='tool' onClick={() => setIsDateModalVisible(true)}>
         <Icon component={Date} />
         <div style={{ color: '#1C4F6D' }}>Date</div>
       </div>
