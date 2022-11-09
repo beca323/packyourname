@@ -11,16 +11,18 @@ import { ReactComponent as Text } from "../../Atoms/Icons/Text.svg";
 import { ReactComponent as Date } from "../../Atoms/Icons/Date.svg";
 import { ReactComponent as Image } from "../../Atoms/Icons/Image.svg";
 import * as Style from "./Style";
+import Imagebox from '../../Common/Signbox/Imagebox';
 
 export default function SignDocument(props) {
   const [isSignModalVisible, setIsSignModalVisible] = useState(false);
   const [isTextModalVisible, setIsTextModalVisible] = useState(false);
   const [isDateModalVisible, setIsDateModalVisible] = useState(false);
+  const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const [isEditFileName, setIsEditFileName] = useState(false);
   const { form, headerTwoRef } = props;
   return (
     <section>
-      <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} />
+      <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />
       <Style.SectionContainer style={{ background: 'none' }}>
         <div>
           <h1 className='c-primary'>Sign</h1>
@@ -70,6 +72,16 @@ export default function SignDocument(props) {
           >
             <Datebox onOk={() => setIsDateModalVisible(false)} onCancel={() => setIsDateModalVisible(false)} />
           </Style.DateModal>
+          <Modal
+            open={isImageModalVisible}
+            onCancel={() => isImageModalVisible(false)}
+            onOk={() => setIsImageModalVisible(false)}
+            title={<h2 className="c-primary">上傳圖片</h2>}
+            footer={null}
+            mask
+          >
+            <Imagebox onOk={() => setIsImageModalVisible(false)} onCancel={() => setIsImageModalVisible(false)} />
+          </Modal>
         </div>
       </Style.SectionContainer>
     </section>
@@ -77,7 +89,7 @@ export default function SignDocument(props) {
 }
 
 export function SignTools(props) {
-  const { setIsSignModalVisible, setIsTextModalVisible, setIsDateModalVisible } = props;
+  const { setIsSignModalVisible, setIsTextModalVisible, setIsDateModalVisible, setIsImageModalVisible } = props;
   return (
     <Style.SignTools>
       <div className='tool' onClick={() => setIsSignModalVisible(true)}>
@@ -93,7 +105,7 @@ export function SignTools(props) {
         <div style={{ color: '#1C4F6D' }}>Date</div>
       </div>
       <div className='tool'>
-        <Icon component={Image} />
+        <Icon component={Image} onClick={() => setIsImageModalVisible(true)} />
         <div style={{ color: '#1C4F6D' }}>Image</div>
       </div>
     </Style.SignTools>

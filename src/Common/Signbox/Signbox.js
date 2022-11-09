@@ -119,9 +119,15 @@ const Textbox = (props) => {
           </Radio>
         </Radio.Group>
       </Style.ColorPickerContainer>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button onClick={handleClear}>清除</Button>
-        <Button onClick={handleConvertToImage}>完成</Button>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', padding: '0.5rem' }}>
+        <Button
+          style={{ border: 'none', borderRadius: '4px', lineHeight: '2rem', height: 'fit-content' }}
+          className="c-primary"
+          onClick={handleClear}>Cancel</Button>
+        <Button
+          style={{ border: 'none', borderRadius: '4px', lineHeight: '2rem', height: 'fit-content' }}
+          className="bg-green"
+          onClick={handleConvertToImage}>OK</Button>
       </div>
 
       {/* {src && (
