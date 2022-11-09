@@ -27,18 +27,6 @@ border-radius: 50%;
 cursor: pointer;
 `;
 
-export const RadioGroupContainer = styled.div`
-.ant-radio{
-  display: none;
-}
-span {
-  width: 100%;
-}
-.ant-radio-wrapper-checked  span  div{
-  border-color: #026CAD;
-}
-`;
-
 export const DateStyle = styled.div`
 font-size: 1.4rem;
 width: 100%;
@@ -58,6 +46,25 @@ position: relative;
   position: absolute;
   top: 0;
   right: 0;
-  transform: translateY(-40%) translateX(40%);
+  transform: translateY(-60%) translateX(40%);
+  opacity: 0;
+  background-color: #fff;
+  height: 24px;
 }
 `;
+
+export const RadioGroupContainer = styled.div`
+.ant-radio{
+  display: none;
+}
+span {
+  width: 100%;
+}
+.ant-radio-wrapper-checked  span  div{
+  border-color: #026CAD;
+  .checked{
+    opacity: 1;
+  }
+}
+`;
+

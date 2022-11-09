@@ -8,14 +8,14 @@ import * as Style from "./Style";
 import moment from "moment";
 import { CheckCircleFilled } from "@ant-design/icons";
 
-const canvasSize = 140;
+const canvasSize = 190;
 
 const Textbox = (props) => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
   const [_, setSignData] = useAtom(signAtom);
-  const [inputText, setInputText] = useState('');
+  const [selectedDateFormat, setSelectedDateFormat] = useState('');
 
   useEffect(() => {
     const c = canvasRef.current;
@@ -27,14 +27,14 @@ const Textbox = (props) => {
   const handleConvertToImage = () => {
     const image = canvas.toDataURL();
     setSignData(image);
-    // setSrc(image);
     props.onOk();
   };
 
   const handleSave = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = '30px Comic Sans MS';
     ctx.textAlign = 'center';
-    ctx.fillText(inputText, canvasSize / 2, canvasSize / 4);
+    ctx.fillText(selectedDateFormat, canvasSize / 2, canvasSize / 4);
     handleConvertToImage();
     props.onOk();
   };
@@ -48,28 +48,43 @@ const Textbox = (props) => {
         height={canvasSize * 0.4}
       ></canvas>
       <Style.RadioGroupContainer>
-        <Radio.Group>
-          <Radio style={{ width: '100%' }} value={0}>
+        <Radio.Group onChange={(e) => setSelectedDateFormat(e.target.value)}>
+          <Radio style={{ width: '100%' }} value={moment().format('YYYY/MM/DD')}>
             <Style.DateStyle>
-              <div className="checked">
-                <CheckCircleFilled />
-              </div>
+              <div className="checked"><CheckCircleFilled /></div>
               {moment().format('YYYY/MM/DD')}
             </Style.DateStyle>
           </Radio>
-          <Radio style={{ width: '100%' }} value={1}>
-            <Style.DateStyle>{moment().format('YYYY.MM.DD')}</Style.DateStyle>
+          <Radio style={{ width: '100%' }} value={moment().format('YYYY.MM.DD')}>
+            <Style.DateStyle>
+              <div className="checked"><CheckCircleFilled /></div>
+              {moment().format('YYYY.MM.DD')}
+            </Style.DateStyle>
           </Radio>
-          <Radio style={{ width: '100%' }} value={2}>
-            <Style.DateStyle>{moment().format('YYYY-MM-DD')}</Style.DateStyle>
+          <Radio style={{ width: '100%' }} value={moment().format('YYYY-MM-DD')}>
+            <Style.DateStyle>
+              <div className="checked"><CheckCircleFilled /></div>
+              {moment().format('YYYY-MM-DD')}
+            </Style.DateStyle>
           </Radio>
-          <Radio style={{ width: '100%' }} value={3}>
-            <Style.DateStyle>{moment().format('DD/MM/YYYY')}</Style.DateStyle>
+          <Radio style={{ width: '100%' }} value={moment().format('DD/MM/YYYY')}>
+            <Style.DateStyle>
+              <div className="checked"><CheckCircleFilled /></div>
+              {moment().format('DD/MM/YYYY')}
+            </Style.DateStyle>
           </Radio>
         </Radio.Group>
       </Style.RadioGroupContainer>
-      <Button onClick={props.onCancel}>Cancel</Button>
-      <Button onClick={handleSave}>OK</Button>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', padding: '0.5rem' }}>
+        <Button
+          style={{ border: 'none', borderRadius: '4px', lineHeight: '2rem', height: 'fit-content' }}
+          className="c-primary"
+          onClick={props.onCancel}>Cancel</Button>
+        <Button
+          style={{ border: 'none', borderRadius: '4px', lineHeight: '2rem', height: 'fit-content' }}
+          className="bg-green"
+          onClick={handleSave}>OK</Button>
+      </div>
 
       {/* {src && (
         <img
