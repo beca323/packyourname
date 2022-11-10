@@ -8,7 +8,7 @@ const CheckboxStyle = styled.button`
   border: 1px solid #026CAD;
   color: ${props => props.checked ? '#FFF' : '#E8E8E8'} ;
   background: ${props => props.checked ? '#12C696' : 'none'} ;
-  width: 2.4rem;
+  width: 2rem;
   height: 2rem;
 `;
 
@@ -21,17 +21,24 @@ function Checkbox(props) {
     props.onClick(!value);
   };
 
+  const handleChange = (value) => {
+    const { onChange } = props;
+    onChange(value);
+  };
+
   return (
-    <CheckboxStyle checked={value} onClick={handleClick}><CheckOutlined /></CheckboxStyle>
+    <CheckboxStyle checked={value} onClick={handleClick} onChange={handleChange}><CheckOutlined /></CheckboxStyle>
   );
 }
 
 Checkbox.protoTypes = {
   defaultValue: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 Checkbox.defaultProps = {
   defaultValue: false,
+  onClick: () => { },
 };
 
 export default Checkbox;

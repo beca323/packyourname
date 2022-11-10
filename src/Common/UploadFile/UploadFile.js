@@ -6,18 +6,19 @@ import { bgFileAtom } from "../../data";
 
 import { pdfjs } from "react-pdf";
 import { Button, Input, message, Modal } from "antd";
+import { UPLOAD_FILE } from "../../Constants/Constants";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const canvasSize = 0;
 // const canvasSize = 500;
 
-const UploadFile = () => {
+const UploadFile = (props) => {
+  const { form } = props;
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
   const [src, setSrc] = useState(null);
   const [fileName, setFileName] = useState('');
-  const isRendered = useRef(false);
 
   const [bgFileData, setBgFileData] = useAtom(bgFileAtom);
 
@@ -43,13 +44,25 @@ const UploadFile = () => {
     img.src = URL.createObjectURL(f);
   };
 
+  const handleSetFileName = (name) => {
+    setFileName(name);
+    form.setFieldsValue({ fileName: name });
+    if (form.getFieldValue('newFileName')) return;
+    form.setFieldsValue({ newFileName: name });
+  };
   /** pdf */
   const handleUploadPdf = (file) => {
-    // if (isRendered.current) return;
     console.log("🎲 ~ file: UploadFile.js ~ line 52 ~ file", file);
-    setFileName(file.name);
-    isRendered.current = true;
-    // if (file.type !== "application/pdf") return;
+    if (file.type !== "application/pdf") {
+      alert('請上傳 pdf');
+      return;
+    }
+    if (file.size > UPLOAD_FILE.LIMIT_SIZE) {
+      alert('檔案大小限制 20MB');
+      return;
+    }
+    handleSetFileName(file.name);
+
     let fileReader = new FileReader();
     fileReader.onload = function () {
       const pdfData = new Uint8Array(this.result);
@@ -60,7 +73,7 @@ const UploadFile = () => {
           //? Fetch the first page
           const pageNumber = 1;
           pdf.getPage(pageNumber).then(function (page) {
-            const scale = 1;
+            const scale = 1.3;
             const viewport = page.getViewport({ scale });
 
             //? Prepare canvas using PDF page dimensions
@@ -94,13 +107,19 @@ const UploadFile = () => {
     setSrc(image);
   };
 
+  useEffect(() => {
+    if (props.pageCount === 1) {
+      handleConvertToImage();
+    }
+  }, [props.pageCount]);
+
   return (
     <>
       <div style={{ textAlign: "center", position: 'relative', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {/* <div style={{ marginBottom: `1rem` }}>
         上傳 Image:
         <input type="file" onChange={handleUploadImage} />
-      </div> */}
+        </div> */}
         <div>
           <div
             className="c-primary"
@@ -122,14 +141,14 @@ const UploadFile = () => {
               accept=".pdf" type="file" onChange={(event) => handleUploadPdf(event.target.files[0])} />
           </div>
         </div>
-        <div>
+        {/* <div>
           <Button onClick={handleConvertToImage} disabled={!fileName}>下一步</Button>
-        </div>
+        </div> */}
 
         {/* <img src={src} alt="imagePdf" /> */}
       </div>
       {/* 預覽 */}
-      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} style={{ boxShadow: "0 0 10px #eeeeff" }}></canvas>
+      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} style={{ boxShadow: "0 0 10px #eeeeff", display: 'none' }}></canvas>
     </>
   );
 };

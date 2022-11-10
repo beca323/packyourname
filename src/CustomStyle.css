@@ -6,3 +6,11 @@
   color: #fff !important;
   background-color: #026CAD !important;
 }
+.c-green {
+  color: #12C696;
+}
+
+.bg-green {
+  background-color: #12C696;
+  color: #fff;
+}
