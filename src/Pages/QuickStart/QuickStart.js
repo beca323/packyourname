@@ -12,6 +12,7 @@ import { useForm } from "antd/lib/form/Form";
 const totalSectionCount = 3;
 export default function QuickStart() {
   const headerTwoRef = useRef();
+  const [fileUploaded, setFileUploaded] = useState(false);
   const visible = useOnScreen(headerTwoRef, "-150px");
   const [pageCount, setPageCount] = useState(0);
   const [toDownload, setToDownload] = useState(false);
@@ -39,7 +40,7 @@ export default function QuickStart() {
           </MyButton>
         }
         {pageCount !== totalSectionCount - 1 &&
-          <MyButton disabled={form.getFieldValue('newFileName') === null} className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
+          <MyButton disabled={!fileUploaded} className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
             Next
             <ArrowRightOutlined />
           </MyButton>
@@ -83,7 +84,7 @@ export default function QuickStart() {
             </div>
           </div>
           <Style.QuickStartPagesContainer count={pageCount}>
-            <UploadNewDocument form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <UploadNewDocument setFileUploaded={setFileUploaded} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
             <SignDocument form={form} toDownload={toDownload} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
             <section>

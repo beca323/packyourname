@@ -28,7 +28,7 @@ export default function UploadNewDocument(props) {
           </Style.SubSection>
           <div>
             <div style={{ display: "flex" }}>Upload Document</div>
-            <UploadFile pageCount={pageCount} form={form} />
+            <UploadFile pageCount={pageCount} form={form} setFileUploaded={props.setFileUploaded} />
           </div>
           <Style.SubSection>
             <div style={{ display: "flex" }}>Signatory</div>
@@ -58,7 +58,6 @@ export default function UploadNewDocument(props) {
             >
               <Input placeholder='Email' />
             </Form.Item>
-            <Input />
           </Style.SubSection>
         </div>
       </Style.SectionContainer>

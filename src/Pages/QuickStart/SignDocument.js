@@ -74,7 +74,7 @@ export default function SignDocument(props) {
           </Style.DateModal>
           <Modal
             open={isImageModalVisible}
-            onCancel={() => isImageModalVisible(false)}
+            onCancel={() => setIsImageModalVisible(false)}
             onOk={() => setIsImageModalVisible(false)}
             title={<h2 className="c-primary">上傳圖片</h2>}
             footer={null}

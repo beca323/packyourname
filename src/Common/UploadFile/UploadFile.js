@@ -62,6 +62,7 @@ const UploadFile = (props) => {
       return;
     }
     handleSetFileName(file.name);
+    props.setFileUploaded(true);
 
     let fileReader = new FileReader();
     fileReader.onload = function () {
