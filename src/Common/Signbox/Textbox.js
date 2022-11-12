@@ -19,6 +19,11 @@ const Textbox = (props) => {
     if (c) setCtx(c.getContext("2d"));
   }, [canvasRef]);
 
+  //. 清除 */
+  const handleClear = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
   //. 轉圖片 */
   const handleConvertToImage = () => {
     const image = canvas.toDataURL();
@@ -28,6 +33,7 @@ const Textbox = (props) => {
   };
 
   const handleSave = () => {
+    handleClear();
     ctx.font = '30px Comic Sans MS';
     ctx.textAlign = 'center';
     ctx.fillText(inputText, canvasSize / 2, canvasSize / 4);

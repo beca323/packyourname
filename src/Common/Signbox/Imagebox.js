@@ -67,7 +67,7 @@ const Imagebox = (props) => {
         ref={canvasRef}
         // width={canvasWidth} height={canvasHeight}
         width={canvasSize}
-        height={canvasSize * 2}
+        height={canvasSize}
       ></canvas>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', padding: '0.5rem' }}>
         <Button
@@ -80,13 +80,13 @@ const Imagebox = (props) => {
           onClick={handleSave}>OK</Button>
       </div>
 
-      {src && (
+      {/* {src && (
         <img
           src={src}
           alt="signImage"
           style={{ color: "#FFF", border: "1px solid #000" }}
         />
-      )}
+      )} */}
     </>
   );
 };

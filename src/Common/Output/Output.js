@@ -51,12 +51,12 @@ const Output = (props) => {
     download();
   }, [props.toDownload]);
 
-  // useEffect(() => {
-  //   window.addEventListener("keydown", handleUserKeyPress);
-  //   return () => {
-  //     window.removeEventListener("keydown", handleUserKeyPress);
-  //   };
-  // });
+  useEffect(() => {
+    window.addEventListener("keydown", handleUserKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleUserKeyPress);
+    };
+  });
 
   // . 縮放 */
   const scaleAndPositionImage = (bgImage) => {
@@ -97,31 +97,17 @@ const Output = (props) => {
 
   // . 監聽刪除 */
   const handleUserKeyPress = (e) => {
-    console.log(e, e.keyCode);
-    if (e.keyCode === 8) {
+    if (e.keyCode === 8 || e.keyCode === 46) {
       deleteSelectedObjectsFromCanvas();
     }
   };
 
   // . 刪除選取物件 */
   const deleteSelectedObjectsFromCanvas = () => {
-    console.log("canvas", canvas);
-    if (canvas) {
-      const activeObject = canvas.getActiveObject();
-      const activeGroup = canvas.getActiveGroup();
-
-      console.log("activeObject", activeObject);
-      console.log("activeGroup", activeGroup);
-      if (activeObject) {
-        canvas.remove(activeObject);
-      } else if (activeGroup) {
-        const objectsInGroup = activeGroup.getObjects();
-        canvas.discardActiveGroup();
-        objectsInGroup.forEach(function (object) {
-          canvas.remove(object);
-        });
-      }
+    function getSelection() {
+      return canvas.getActiveObject() == null ? canvas.getActiveGroup() : canvas.getActiveObject();
     }
+    canvas.remove(getSelection());
   };
 
   // . 下載 */
