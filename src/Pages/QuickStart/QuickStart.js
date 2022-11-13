@@ -8,14 +8,16 @@ import UploadNewDocument from "./UploadNewDocument";
 import SignDocument from "./SignDocument";
 import { MyButton } from "../../Atoms/Components/Button";
 import { useForm } from "antd/lib/form/Form";
+import { Document, Page } from "react-pdf";
 
 const totalSectionCount = 3;
 export default function QuickStart() {
   const headerTwoRef = useRef();
   const [fileUploaded, setFileUploaded] = useState(false);
-  const visible = useOnScreen(headerTwoRef, "-150px");
+  const visible = useOnScreen(headerTwoRef, "0px");
   const [pageCount, setPageCount] = useState(0);
   const [toDownload, setToDownload] = useState(false);
+  const [pdfFile, setPdfFile] = useState(null);
   const [form] = useForm();
 
   const handleClickNext = () => {
@@ -69,13 +71,14 @@ export default function QuickStart() {
   return (
     <>
       <MyHeader renderButtons={HeaderButton} />
-      <div style={{ height: '100vh' }}>
+      <div style={{ position: 'relative' }}>
         <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
           console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
         }}>
-          <div style={{ display: 'flex', background: (visible || pageCount !== 0) ? '#F5F9FA' : '#fff', position: (visible && pageCount === 0) ? 'relative' : 'fixed', width: '100%', zIndex: 1, transition: '0.1s all ease', padding: '0 1rem' }} >
+          {pageCount === 1 && <AllPages pdfFile={pdfFile} />}
+          <div style={{ display: 'flex', background: (visible || pageCount !== 0) ? '#F5F9FA' : '#fff', padding: '0 1rem' }} >
             {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
-            <div style={{ width: '80%', maxWidth: '500px', margin: '1rem auto' }}>
+            <div style={{ width: '80%', maxWidth: '380px', margin: '1rem auto' }}>
               <Style.MySteps current={pageCount}>
                 {steps.map((item) => (
                   <Steps.Step key={item.title} title={item.title} />
@@ -83,9 +86,11 @@ export default function QuickStart() {
               </Style.MySteps>
             </div>
           </div>
+
+
           <Style.QuickStartPagesContainer count={pageCount}>
-            <UploadNewDocument setFileUploaded={setFileUploaded} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
-            <SignDocument form={form} toDownload={toDownload} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <UploadNewDocument setPdfFile={setPdfFile} setFileUploaded={setFileUploaded} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <SignDocument pdfFile={pdfFile} form={form} toDownload={toDownload} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
             <section>
               <Style.SectionContainer style={{ background: visible ? '#fff' : 'none' }}>
@@ -99,5 +104,27 @@ export default function QuickStart() {
         </Form>
       </div>
     </>
+  );
+}
+
+export function AllPages(props) {
+  const { pdfFile } = props;
+  const [numPages, setNumPages] = useState(null);
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
+
+  return (
+    <Style.AllPagesContainer>
+      <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
+        {Array.from(new Array(numPages), (el, index) => (
+          <div className="one-page" key={index}>
+            <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+            <p style={{ color: '#A6A6A6' }}>{index + 1} of {numPages}</p>
+          </div>
+        ))}
+      </Document>
+    </Style.AllPagesContainer>
   );
 }

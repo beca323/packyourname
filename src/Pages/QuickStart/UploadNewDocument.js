@@ -28,7 +28,7 @@ export default function UploadNewDocument(props) {
           </Style.SubSection>
           <div>
             <div style={{ display: "flex" }}>Upload Document</div>
-            <UploadFile pageCount={pageCount} form={form} setFileUploaded={props.setFileUploaded} />
+            <UploadFile pageCount={pageCount} form={form} setFileUploaded={props.setFileUploaded} setPdfFile={props.setPdfFile} />
           </div>
           <Style.SubSection>
             <div style={{ display: "flex" }}>Signatory</div>

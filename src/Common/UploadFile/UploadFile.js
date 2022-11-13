@@ -4,7 +4,7 @@ import getScaledDim from "../../utils/getScaledDim";
 import { useAtom } from "jotai";
 import { bgFileAtom } from "../../data";
 
-import { pdfjs } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";
 import { Button, Input, message, Modal } from "antd";
 import { UPLOAD_FILE } from "../../Constants/Constants";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -52,7 +52,7 @@ const UploadFile = (props) => {
   };
   /** pdf */
   const handleUploadPdf = (file) => {
-    console.log("🎲 ~ file: UploadFile.js ~ line 52 ~ file", file);
+    props.setPdfFile(file);
     if (file.type !== "application/pdf") {
       alert('請上傳 pdf');
       return;
@@ -114,6 +114,12 @@ const UploadFile = (props) => {
     }
   }, [props.pageCount]);
 
+  const options = {
+    cMapUrl: 'cmaps/',
+    cMapPacked: true,
+    standardFontDataUrl: 'standard_fonts/',
+  };
+
   return (
     <>
       <div style={{ textAlign: "center", position: 'relative', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -142,10 +148,6 @@ const UploadFile = (props) => {
               accept=".pdf" type="file" onChange={(event) => handleUploadPdf(event.target.files[0])} />
           </div>
         </div>
-        {/* <div>
-          <Button onClick={handleConvertToImage} disabled={!fileName}>下一步</Button>
-        </div> */}
-
         {/* <img src={src} alt="imagePdf" /> */}
       </div>
       {/* 預覽 */}

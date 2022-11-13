@@ -12,6 +12,7 @@ import { ReactComponent as Date } from "../../Atoms/Icons/Date.svg";
 import { ReactComponent as Image } from "../../Atoms/Icons/Image.svg";
 import * as Style from "./Style";
 import Imagebox from '../../Common/Signbox/Imagebox';
+import { Document, Page } from 'react-pdf';
 
 export default function SignDocument(props) {
   const [isSignModalVisible, setIsSignModalVisible] = useState(false);
@@ -29,7 +30,7 @@ export default function SignDocument(props) {
           <div ref={headerTwoRef}></div>
           {isEditFileName
             ? (
-              <Row typeof='flex' justify='center' alignItems='center'>
+              <Row typeof='flex' justify='center' >
                 <Col>
                   <Form.Item name="newFileName">
                     <Input defaultValue={form.getFieldValue('newFileName')} />

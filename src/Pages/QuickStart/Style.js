@@ -9,8 +9,7 @@ overflow: hidden;
   transition: 0.5s all ease;
   transform: translateX(${props => props.count * -100}vw);
   min-width: 100vw;
-  min-height: 100vh;
-  overflow: auto;
+  height: calc(100vh - 124px);
 }
 `;
 
@@ -33,7 +32,6 @@ export const MySteps = styled(Steps)`
 `;
 
 export const SectionContainer = styled.div`
-  height: 150vh;
   padding: 2% 4%;
   margin: 3rem auto;
   max-width: 800px;
@@ -71,5 +69,38 @@ svg{
 export const DateModal = styled(Modal)`
 .ant-modal-close-x{
   display: none;
+}
+`;
+
+export const AllPagesContainer = styled.div`
+background: #fff;
+position: absolute;
+box-shadow: 0px 0px 10px #00000011;
+z-index: 2;
+.react-pdf__Document{
+  height: calc(100vh - 60px);
+  overflow: auto;
+}
+.one-page{
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  margin: 0 16px;
+  border-radius: 6px;
+  transition: .1s all;
+  &:hover{
+    background-color: #cce2ef;
+    p{
+      color: #000 !important;
+    }
+  }
+}
+.react-pdf__Page__canvas{
+  box-shadow: 0px 0px 10px #00000011;
+}
+.react-pdf__Page__canvas , .react-pdf__Page__textContent{
+  margin: 0 10px;
+  width: 92px !important;
+  height: ${1.414 * 92}px !important;
 }
 `;
