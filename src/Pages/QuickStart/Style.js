@@ -32,8 +32,8 @@ export const MySteps = styled(Steps)`
 `;
 
 export const SectionContainer = styled.div`
-  padding: 2% 4%;
-  margin: 3rem auto;
+  padding: 0 4%;
+  margin: 1rem auto;
   max-width: 800px;
   background: #fff;
   transition: all .5s ease;
@@ -80,15 +80,16 @@ z-index: 2;
 .react-pdf__Document{
   height: calc(100vh - 60px);
   overflow: auto;
+  padding: 0.5rem 0;
 }
 .one-page{
   display: flex;
   flex-direction: column;
   padding-top: 10px;
-  margin: 0 16px;
+  margin: 4px 16px;
   border-radius: 6px;
   transition: .1s all;
-  &:hover{
+  &:hover , &.active{
     background-color: #cce2ef;
     p{
       color: #000 !important;

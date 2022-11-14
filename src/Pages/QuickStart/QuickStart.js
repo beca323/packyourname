@@ -18,6 +18,7 @@ export default function QuickStart() {
   const [pageCount, setPageCount] = useState(0);
   const [toDownload, setToDownload] = useState(false);
   const [pdfFile, setPdfFile] = useState(null);
+  const [activePage, setActivePage] = useState(1);
   const [form] = useForm();
 
   const handleClickNext = () => {
@@ -75,7 +76,7 @@ export default function QuickStart() {
         <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
           console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
         }}>
-          {pageCount === 1 && <AllPages pdfFile={pdfFile} />}
+          {pageCount === 1 && <AllPages pdfFile={pdfFile} activePage={activePage} setActivePage={setActivePage} />}
           <div style={{ display: 'flex', background: (visible || pageCount !== 0) ? '#F5F9FA' : '#fff', padding: '0 1rem' }} >
             {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
             <div style={{ width: '80%', maxWidth: '380px', margin: '1rem auto' }}>
@@ -89,7 +90,7 @@ export default function QuickStart() {
 
 
           <Style.QuickStartPagesContainer count={pageCount}>
-            <UploadNewDocument setPdfFile={setPdfFile} setFileUploaded={setFileUploaded} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <UploadNewDocument pageNumber={activePage} pdfFile={pdfFile} setPdfFile={setPdfFile} setFileUploaded={setFileUploaded} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
             <SignDocument pdfFile={pdfFile} form={form} toDownload={toDownload} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
             <section>
@@ -108,7 +109,7 @@ export default function QuickStart() {
 }
 
 export function AllPages(props) {
-  const { pdfFile } = props;
+  const { pdfFile, activePage, setActivePage } = props;
   const [numPages, setNumPages] = useState(null);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
@@ -119,12 +120,14 @@ export function AllPages(props) {
     <Style.AllPagesContainer>
       <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
         {Array.from(new Array(numPages), (el, index) => (
-          <div className="one-page" key={index}>
+          <div className={activePage === index + 1 ? 'one-page active' : 'one-page'} key={index}
+            onClick={() => setActivePage(index + 1)}
+          >
             <Page key={`page_${index + 1}`} pageNumber={index + 1} />
             <p style={{ color: '#A6A6A6' }}>{index + 1} of {numPages}</p>
           </div>
         ))}
       </Document>
-    </Style.AllPagesContainer>
+    </Style.AllPagesContainer >
   );
 }

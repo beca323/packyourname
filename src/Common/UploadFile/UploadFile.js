@@ -64,6 +64,13 @@ const UploadFile = (props) => {
     handleSetFileName(file.name);
     props.setFileUploaded(true);
 
+    renderFile(file);
+  };
+
+  const renderFile = (file, pageNumber = 1) => {
+    console.debug('🙈 · renderFile · file, pageNumber', file, pageNumber);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     let fileReader = new FileReader();
     fileReader.onload = function () {
       const pdfData = new Uint8Array(this.result);
@@ -72,7 +79,7 @@ const UploadFile = (props) => {
       loadingTask.promise.then(
         function (pdf) {
           //? Fetch the first page
-          const pageNumber = 1;
+          // const pageNumber = 1;
           pdf.getPage(pageNumber).then(function (page) {
             const scale = 1.3;
             const viewport = page.getViewport({ scale });
@@ -100,6 +107,11 @@ const UploadFile = (props) => {
     };
     fileReader.readAsArrayBuffer(file);
   };
+
+  useEffect(() => {
+    if (!props.pdfFile) return;
+    renderFile(props.pdfFile, props.pageNumber);
+  }, [props.pageNumber]);
 
   /** 輸出成圖片 */
   const handleConvertToImage = () => {

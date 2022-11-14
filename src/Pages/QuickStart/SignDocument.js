@@ -26,7 +26,6 @@ export default function SignDocument(props) {
       <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />
       <Style.SectionContainer style={{ background: 'none' }}>
         <div>
-          <h1 className='c-primary'>Sign</h1>
           <div ref={headerTwoRef}></div>
           {isEditFileName
             ? (
