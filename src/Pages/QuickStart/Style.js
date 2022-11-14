@@ -2,7 +2,6 @@ import { Modal, Steps } from 'antd';
 import styled from 'styled-components';
 
 export const QuickStartPagesContainer = styled.div`
-// height: 100vh;
 display: flex;
 overflow: hidden;
 > section{
@@ -50,7 +49,7 @@ export const SignTools = styled.div`
 z-index: 2;
 position: absolute;
 right: 0;
-top: 30vh;
+top: 20vh;
 padding: 0 1rem;
 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 background: #fff;
@@ -74,7 +73,7 @@ export const DateModal = styled(Modal)`
 
 export const AllPagesContainer = styled.div`
 background: #fff;
-position: absolute;
+position: fixed;
 box-shadow: 0px 0px 10px #00000011;
 z-index: 2;
 .react-pdf__Document{
@@ -89,6 +88,9 @@ z-index: 2;
   margin: 4px 16px;
   border-radius: 6px;
   transition: .1s all;
+  .react-pdf__Page__canvas{
+    box-shadow: 0px 0px 5px 0px #00000040;
+  }
   &:hover , &.active{
     background-color: #cce2ef;
     p{

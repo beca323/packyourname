@@ -7,6 +7,7 @@ import Signbox from '../../Common/Signbox/Signbox';
 import Textbox from '../../Common/Signbox/Textbox';
 import Datebox from '../../Common/Signbox/Datebox';
 import { ReactComponent as Sign } from "../../Atoms/Icons/Sign.svg";
+import { ReactComponent as TextT } from "../../Atoms/Icons/T.svg";
 import { ReactComponent as Text } from "../../Atoms/Icons/Text.svg";
 import { ReactComponent as Date } from "../../Atoms/Icons/Date.svg";
 import { ReactComponent as Image } from "../../Atoms/Icons/Image.svg";
@@ -97,7 +98,9 @@ export function SignTools(props) {
         <div style={{ color: '#1C4F6D' }}>Sign</div>
       </div>
       <div className='tool' onClick={() => setIsTextModalVisible(true)}>
+        <Icon component={TextT} style={{ position: 'absolute', transform: 'scale(0.5) translateX(20%)' }} />
         <Icon component={Text} />
+        {/* <img src="../../Atoms/Icons/Text.png" alt='text' /> */}
         <div style={{ color: '#1C4F6D' }}>Text</div>
       </div>
       <div className='tool' onClick={() => setIsDateModalVisible(true)}>
