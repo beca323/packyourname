@@ -8,7 +8,8 @@ overflow: hidden;
   transition: 0.5s all ease;
   transform: translateX(${props => props.count * -100}vw);
   min-width: 100vw;
-  height: calc(100vh - 124px);
+  // height: calc(100vh - 124px);
+  height: 130vh;
 }
 `;
 
@@ -86,7 +87,7 @@ z-index: 2;
   flex-direction: column;
   padding-top: 10px;
   margin: 4px 16px;
-  border-radius: 6px;
+  border-radius: 4px;
   transition: .1s all;
   .react-pdf__Page__canvas{
     box-shadow: 0px 0px 5px 0px #00000040;
@@ -96,6 +97,9 @@ z-index: 2;
     p{
       color: #000 !important;
     }
+  }
+  .react-pdf__Page__textContent{
+    display: none;
   }
 }
 .react-pdf__Page__canvas{

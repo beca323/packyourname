@@ -10,7 +10,6 @@ import { UPLOAD_FILE } from "../../Constants/Constants";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const canvasSize = 0;
-// const canvasSize = 500;
 
 const UploadFile = (props) => {
   const { form } = props;
@@ -26,7 +25,7 @@ const UploadFile = (props) => {
     const c = canvasRef.current;
     setCanvas(c);
     if (c) setCtx(c.getContext("2d"));
-  }, [canvasRef]);
+  }, []);
 
   /** image */
   const handleUploadImage = (event) => {
@@ -61,34 +60,30 @@ const UploadFile = (props) => {
       alert('檔案大小限制 20MB');
       return;
     }
-    handleSetFileName(file.name);
+    handleSetFileName(file.name.replace('.pdf', ''));
     props.setFileUploaded(true);
 
     renderFile(file);
   };
 
   const renderFile = (file, pageNumber = 1) => {
-    console.debug('🙈 · renderFile · file, pageNumber', file, pageNumber);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     let fileReader = new FileReader();
     fileReader.onload = function () {
       const pdfData = new Uint8Array(this.result);
-      //? Using DocumentInitParameters object to load binary data.
+      // . Using DocumentInitParameters object to load binary data.
       const loadingTask = pdfjs.getDocument({ data: pdfData });
       loadingTask.promise.then(
         function (pdf) {
-          //? Fetch the first page
-          // const pageNumber = 1;
+          // . Fetch the first page
           pdf.getPage(pageNumber).then(function (page) {
             const scale = 1.3;
             const viewport = page.getViewport({ scale });
 
-            //? Prepare canvas using PDF page dimensions
+            // . Prepare canvas using PDF page dimensions
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
-            //? Render PDF page into canvas context
+            // . Render PDF page into canvas context
             const renderContext = {
               canvasContext: ctx,
               viewport: viewport
@@ -96,6 +91,8 @@ const UploadFile = (props) => {
             const renderTask = page.render(renderContext);
             renderTask.promise.then(function () {
               console.log("Page rendered");
+            }).then(() => {
+              handleConvertToImage();
             });
           });
         },
@@ -110,6 +107,8 @@ const UploadFile = (props) => {
 
   useEffect(() => {
     if (!props.pdfFile) return;
+    // TODO
+    // handleConvertToImage();
     renderFile(props.pdfFile, props.pageNumber);
   }, [props.pageNumber]);
 
@@ -125,12 +124,6 @@ const UploadFile = (props) => {
       handleConvertToImage();
     }
   }, [props.pageCount]);
-
-  const options = {
-    cMapUrl: 'cmaps/',
-    cMapPacked: true,
-    standardFontDataUrl: 'standard_fonts/',
-  };
 
   return (
     <>

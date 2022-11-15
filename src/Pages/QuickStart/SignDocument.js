@@ -13,7 +13,6 @@ import { ReactComponent as Date } from "../../Atoms/Icons/Date.svg";
 import { ReactComponent as Image } from "../../Atoms/Icons/Image.svg";
 import * as Style from "./Style";
 import Imagebox from '../../Common/Signbox/Imagebox';
-import { Document, Page } from 'react-pdf';
 
 export default function SignDocument(props) {
   const [isSignModalVisible, setIsSignModalVisible] = useState(false);
@@ -32,7 +31,7 @@ export default function SignDocument(props) {
             ? (
               <Row typeof='flex' justify='center' >
                 <Col>
-                  <Form.Item name="newFileName">
+                  <Form.Item name="fileName">
                     <Input defaultValue={form.getFieldValue('newFileName')} />
                   </Form.Item>
                 </Col>
@@ -43,7 +42,7 @@ export default function SignDocument(props) {
             ) : (
               <h2 className='c-primary' style={{ alignItems: 'center' }}>{form.getFieldValue('newFileName')} <EditOutlined onClick={() => setIsEditFileName(!isEditFileName)} style={{ cursor: 'pointer' }} /></h2>
             )}
-          <Output toDownload={props.toDownload} />
+          <Output toDownload={props.toDownload} pageNumber={props.pageNumber} form={form} />
           <Modal
             open={isSignModalVisible}
             onCancel={() => setIsSignModalVisible(false)}
@@ -98,7 +97,7 @@ export function SignTools(props) {
         <div style={{ color: '#1C4F6D' }}>Sign</div>
       </div>
       <div className='tool' onClick={() => setIsTextModalVisible(true)}>
-        <Icon component={TextT} style={{ position: 'absolute', transform: 'scale(0.5) translateX(20%)' }} />
+        <Icon component={TextT} style={{ position: 'absolute', transform: 'scale(0.5) translateX(25%)' }} />
         <Icon component={Text} />
         {/* <img src="../../Atoms/Icons/Text.png" alt='text' /> */}
         <div style={{ color: '#1C4F6D' }}>Text</div>

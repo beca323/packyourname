@@ -28,6 +28,7 @@ export default function QuickStart() {
   const handleClickBack = () => {
     if (pageCount === 0) return;
     setPageCount((prev) => prev - 1);
+    setToDownload(false);
   };
   const handleClickDone = () => {
     setToDownload(true);
@@ -77,7 +78,7 @@ export default function QuickStart() {
           console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
         }}>
           {pageCount === 1 && <AllPages pdfFile={pdfFile} activePage={activePage} setActivePage={setActivePage} />}
-          <div style={{ display: 'flex', background: (visible || pageCount !== 0) ? '#F5F9FA' : '#fff', padding: '0 1rem' }} >
+          <div style={{ display: 'flex', padding: '0 1rem' }} >
             {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
             <div style={{ width: '80%', maxWidth: '380px', margin: '1rem auto' }}>
               <Style.MySteps current={pageCount}>
@@ -88,10 +89,9 @@ export default function QuickStart() {
             </div>
           </div>
 
-
           <Style.QuickStartPagesContainer count={pageCount}>
             <UploadNewDocument pageNumber={activePage} pdfFile={pdfFile} setPdfFile={setPdfFile} setFileUploaded={setFileUploaded} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
-            <SignDocument pdfFile={pdfFile} form={form} toDownload={toDownload} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <SignDocument pageNumber={activePage} pdfFile={pdfFile} form={form} toDownload={toDownload} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
             <section>
               <Style.SectionContainer style={{ background: visible ? '#fff' : 'none' }}>
@@ -124,7 +124,7 @@ export function AllPages(props) {
             onClick={() => setActivePage(index + 1)}
           >
             <Page key={`page_${index + 1}`} pageNumber={index + 1} />
-            <p style={{ color: '#A6A6A6' }}>{index + 1} of {numPages}</p>
+            <p style={{ color: '#A6A6A6', margin: '0', textAlign: 'end', paddingRight: '12px' }}>{index + 1} of {numPages}</p>
           </div>
         ))}
       </Document>

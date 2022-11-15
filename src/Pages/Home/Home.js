@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <>
       <MyHeader renderButtons={renderButtons} />
-      <div style={{ padding: "2rem" }}>
+      <div style={{ height: 'calc(100vh - 60px)' }}>
         <Routes>
           <Route path="" element={<About />} />
           <Route path="login" element={<Login />} />

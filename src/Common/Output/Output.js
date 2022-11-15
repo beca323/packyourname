@@ -12,6 +12,7 @@ const canvasOriginalWidth = 800;
 const Output = (props) => {
   const [signData] = useAtom(signAtom);
   const [bgFileData] = useAtom(bgFileAtom);
+  const [testSrc, setTestSrc] = useState(null);
 
   const mainRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
@@ -20,7 +21,7 @@ const Output = (props) => {
   useEffect(() => {
     const c = new fabric.Canvas(mainRef.current);
     setCanvas(c);
-  }, [mainRef]);
+  }, [mainRef, props.pageNumber]);
 
   // . 填上簽名 */
   useEffect(() => {
@@ -30,8 +31,8 @@ const Output = (props) => {
         img.scaleToHeight(150);
         canvas.add(img).renderAll();
       });
-    }
-  }, [canvas, signData]);
+    } 
+  }, [signData]);
 
   // . 填上背景檔案 */
   useEffect(() => {
@@ -43,7 +44,7 @@ const Output = (props) => {
         scaleAndPositionImage(img);
       });
     }
-  }, [canvas, bgFileData]);
+  }, [canvas, bgFileData, props.pageNumber]);
 
   useEffect(() => {
     const { toDownload } = props;
@@ -105,7 +106,7 @@ const Output = (props) => {
   // . 刪除選取物件 */
   const deleteSelectedObjectsFromCanvas = () => {
     function getSelection() {
-      return canvas.getActiveObject() == null ? canvas.getActiveGroup() : canvas.getActiveObject();
+      return canvas.getActiveObject() === null ? canvas.getActiveGroup() : canvas.getActiveObject();
     }
     canvas.remove(getSelection());
   };
@@ -114,25 +115,26 @@ const Output = (props) => {
   const download = () => {
     const dataURL = canvas.toDataURL({ format: "png" });
     const pdf = new jsPDF();
-    pdf.addImage(dataURL, 'JPED', 0, 0);
-    pdf.save('file.pdf');
+    pdf.addImage(dataURL, 'JPEG', 0, 0);
 
-    // const link = document.createElement("a");
-    // link.download = "my-image.png";
-    // link.href = dataURL;
-    // link.target = "_blank";
-    // document.body.appendChild(link);
-    // link.click();
-    // link.parentNode.removeChild(link);
+    const { form } = props;
+    const fileName = form.getFieldValue('fileName');
+    pdf.save(fileName ? `${fileName}.pdf` : 'PackYourName.pdf');
+  };
 
+  const handleClickTrans = () => {
+    const image = canvas.toDataURL();
+    setTestSrc(image);
   };
 
   return (
     <>
+      <Button onClick={handleClickTrans}>test!!</Button>
+      <img src={testSrc} alt="" />
       <OutputCanvas>
         <canvas ref={mainRef} style={{ margin: '1rem' }}></canvas>
       </OutputCanvas>
-      <Button onClick={download} style={{ display: 'none' }}>下載</Button>
+      {/* <Button onClick={download} style={{ display: 'none' }}>下載</Button> */}
     </>
   );
 };
