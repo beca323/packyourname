@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import getTouchPos from "../../utils/getTouchPos";
-import getMousePos from "../../utils/getMousePos";
 import { useAtom } from "jotai";
 import { signAtom } from "../../data";
 import { Button, Input, Radio } from "antd";

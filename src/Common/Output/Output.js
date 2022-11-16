@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAtom } from "jotai";
 import { bgFileAtom, signAtom } from "../../data";
-import { Wrapper, Main, OutputCanvas } from "./Style";
+import { OutputCanvas } from "./Style";
 import { fabric } from "fabric";
 import { Button } from "antd";
 import jsPDF from "jspdf";
@@ -12,7 +12,6 @@ const canvasOriginalWidth = 800;
 const Output = (props) => {
   const [signData] = useAtom(signAtom);
   const [bgFileData] = useAtom(bgFileAtom);
-  const [testSrc, setTestSrc] = useState(null);
 
   const mainRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
@@ -21,7 +20,8 @@ const Output = (props) => {
   useEffect(() => {
     const c = new fabric.Canvas(mainRef.current);
     setCanvas(c);
-  }, [mainRef, props.pageNumber]);
+  }, []);
+  // }, [mainRef, props.pageNumber]);
 
   // . 填上簽名 */
   useEffect(() => {
@@ -30,6 +30,7 @@ const Output = (props) => {
         img.scaleToWidth(100);
         img.scaleToHeight(150);
         canvas.add(img).renderAll();
+        canvas.moveTo(img, 1);
       });
     } 
   }, [signData]);
@@ -41,16 +42,16 @@ const Output = (props) => {
         canvas.setBackgroundImage(bgFileData).renderAll();
         canvas.setHeight(img.height);
         canvas.setWidth(img.width);
-        scaleAndPositionImage(img);
+        // scaleAndPositionImage(img);
       });
     }
-  }, [canvas, bgFileData, props.pageNumber]);
+  }, [bgFileData, props.pageNumber]);
 
-  useEffect(() => {
-    const { toDownload } = props;
-    if (!toDownload) return;
-    download();
-  }, [props.toDownload]);
+  // useEffect(() => {
+  //   const { toDownload } = props;
+  //   if (!toDownload) return;
+  //   download();
+  // }, [props.toDownload]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleUserKeyPress);
@@ -112,29 +113,35 @@ const Output = (props) => {
   };
 
   // . 下載 */
-  const download = () => {
-    const dataURL = canvas.toDataURL({ format: "png" });
-    const pdf = new jsPDF();
-    pdf.addImage(dataURL, 'JPEG', 0, 0);
+  // const download = () => {
+  //   const dataURL = canvas.toDataURL({ format: "png" });
+  //   const pdf = new jsPDF();
+  //   pdf.addImage(dataURL, 'JPEG', 0, 0);
 
-    const { form } = props;
-    const fileName = form.getFieldValue('fileName');
-    pdf.save(fileName ? `${fileName}.pdf` : 'PackYourName.pdf');
-  };
+  //   const { form } = props;
+  //   const fileName = form.getFieldValue('fileName');
+  //   pdf.save(fileName ? `${fileName}.pdf` : 'PackYourName.pdf');
+  // };
 
   const handleClickTrans = () => {
     const image = canvas.toDataURL();
-    setTestSrc(image);
+    let tempSrcs = props.previewSrcs;
+    tempSrcs[props.pageNumber - 1] = image;
+    props.setPreviewSrcs(tempSrcs);
   };
+
+  useEffect(() => {
+    if (props.pageNumber === 0 || !canvas) return;
+    if (!props.toPreview) return;
+    handleClickTrans();
+  }, [props.pageNumber, props.toPreview]);
 
   return (
     <>
       <Button onClick={handleClickTrans}>test!!</Button>
-      <img src={testSrc} alt="" />
       <OutputCanvas>
         <canvas ref={mainRef} style={{ margin: '1rem' }}></canvas>
       </OutputCanvas>
-      {/* <Button onClick={download} style={{ display: 'none' }}>下載</Button> */}
     </>
   );
 };

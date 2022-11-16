@@ -128,10 +128,6 @@ const UploadFile = (props) => {
   return (
     <>
       <div style={{ textAlign: "center", position: 'relative', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {/* <div style={{ marginBottom: `1rem` }}>
-        上傳 Image:
-        <input type="file" onChange={handleUploadImage} />
-        </div> */}
         <div>
           <div
             className="c-primary"

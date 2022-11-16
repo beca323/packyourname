@@ -6,7 +6,7 @@ import * as Style from './Style';
 import { Col, Form, Input, Row } from 'antd';
 
 export default function UploadNewDocument(props) {
-  const { headerTwoRef, visible, pageCount, form } = props;
+  const { headerTwoRef, pageCount, form } = props;
   return (
     <section>
       <Style.SectionContainer style={{ background: '#fff', padding: '2% 4%' }}>

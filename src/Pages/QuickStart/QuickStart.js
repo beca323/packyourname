@@ -9,6 +9,7 @@ import SignDocument from "./SignDocument";
 import { MyButton } from "../../Atoms/Components/Button";
 import { useForm } from "antd/lib/form/Form";
 import { Document, Page } from "react-pdf";
+import jsPDF from "jspdf";
 
 const totalSectionCount = 3;
 export default function QuickStart() {
@@ -16,22 +17,36 @@ export default function QuickStart() {
   const [fileUploaded, setFileUploaded] = useState(false);
   const visible = useOnScreen(headerTwoRef, "0px");
   const [pageCount, setPageCount] = useState(0);
-  const [toDownload, setToDownload] = useState(false);
+  const [toPreview, setToPreview] = useState(false);
   const [pdfFile, setPdfFile] = useState(null);
   const [activePage, setActivePage] = useState(1);
+  const [previewSrcs, setPreviewSrcs] = useState([]);
   const [form] = useForm();
 
   const handleClickNext = () => {
     if (pageCount >= totalSectionCount - 1) return;
     setPageCount((prev) => prev + 1);
+    if (pageCount === 1) {
+      setToPreview(true);
+    } else {
+      setToPreview(false);
+    }
   };
   const handleClickBack = () => {
     if (pageCount === 0) return;
     setPageCount((prev) => prev - 1);
-    setToDownload(false);
   };
   const handleClickDone = () => {
-    setToDownload(true);
+    const pdf = new jsPDF();
+    previewSrcs.map((src, index) => {
+      if (src) {
+        pdf.addImage(src, 'JPEG', 0, 0);
+        if (index === previewSrcs.length - 1) return;
+        pdf.addPage();
+      }
+    });
+    const fileName = form.getFieldValue('fileName');
+    pdf.save(fileName ? `${fileName}.pdf` : 'PackYourName.pdf');
   };
 
   const HeaderButton = () => {
@@ -77,7 +92,7 @@ export default function QuickStart() {
         <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
           console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
         }}>
-          {pageCount === 1 && <AllPages pdfFile={pdfFile} activePage={activePage} setActivePage={setActivePage} />}
+          {pageCount === 1 && <AllPages setPreviewSrcs={setPreviewSrcs} pdfFile={pdfFile} activePage={activePage} setActivePage={setActivePage} />}
           <div style={{ display: 'flex', padding: '0 1rem' }} >
             {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
             <div style={{ width: '80%', maxWidth: '380px', margin: '1rem auto' }}>
@@ -91,12 +106,19 @@ export default function QuickStart() {
 
           <Style.QuickStartPagesContainer count={pageCount}>
             <UploadNewDocument pageNumber={activePage} pdfFile={pdfFile} setPdfFile={setPdfFile} setFileUploaded={setFileUploaded} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
-            <SignDocument pageNumber={activePage} pdfFile={pdfFile} form={form} toDownload={toDownload} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <SignDocument toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} pageNumber={activePage} pdfFile={pdfFile} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
-            <section>
+            <section style={{ height: 'fit-content' }}>
               <Style.SectionContainer style={{ background: visible ? '#fff' : 'none' }}>
                 <div style={{ margin: '1rem auto', maxWidth: '800px' }}>
                   <h1 className='c-primary'>Review</h1>
+                  {previewSrcs.map((src, index) => {
+                    return (
+                      <div key={index} style={{ transform: 'scale(0.9) translateX(-5%)' }}>
+                        <img src={src} alt="" />
+                      </div>
+                    );
+                  })}
                 </div>
               </Style.SectionContainer>
             </section>
@@ -109,19 +131,25 @@ export default function QuickStart() {
 }
 
 export function AllPages(props) {
-  const { pdfFile, activePage, setActivePage } = props;
+  const { pdfFile, activePage, setActivePage, setPreviewSrcs } = props;
   const [numPages, setNumPages] = useState(null);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
+    const arr = new Array(numPages).fill('');
+    setPreviewSrcs(arr);
+  };
+
+  const handleChangePage = (index) => {
+    setActivePage(index + 1);
   };
 
   return (
     <Style.AllPagesContainer>
       <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
         {Array.from(new Array(numPages), (el, index) => (
-          <div className={activePage === index + 1 ? 'one-page active' : 'one-page'} key={index}
-            onClick={() => setActivePage(index + 1)}
+          <div className={activePage === index + 1 ? `one-page active` : `one-page`} key={index}
+            onClick={() => handleChangePage(index)}
           >
             <Page key={`page_${index + 1}`} pageNumber={index + 1} />
             <p style={{ color: '#A6A6A6', margin: '0', textAlign: 'end', paddingRight: '12px' }}>{index + 1} of {numPages}</p>
