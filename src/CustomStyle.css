@@ -1,0 +1,19 @@
+.c-primary {
+  color: #026CAD;
+}
+
+.bg-primary {
+  color: #fff !important;
+  background-color: #026CAD !important;
+}
+.c-green {
+  color: #12C696;
+}
+
+.c-gray {
+  color: #A6A6A6;
+}
+.bg-green {
+  background-color: #12C696;
+  color: #fff;
+}
