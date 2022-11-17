@@ -7,12 +7,15 @@ function MyHeader(props) {
 
   const { renderButtons } = props;
   return (
-    <Style.MyHeader>
-      <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Pack Your Name</div>
-      {renderButtons
-        ? <div>{renderButtons()}</div>
-        : <div style={{ opacity: 0 }}>.</div>}
-    </Style.MyHeader>
+    <>
+      <div style={{ height: '60px', opacity: 0 }}>.</div>
+      <Style.MyHeader>
+        <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Pack Your Name</div>
+        {renderButtons
+          ? <div>{renderButtons()}</div>
+          : <div style={{ opacity: 0 }}>.</div>}
+      </Style.MyHeader>
+    </>
   );
 }
 

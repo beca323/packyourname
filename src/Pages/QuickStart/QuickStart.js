@@ -89,7 +89,7 @@ export default function QuickStart() {
 
   const steps = [{ title: 'Upload', stepTitle: 'Upload New Document' }, { title: 'Sign', stepTitle: 'Sign' }, { title: 'Review', stepTitle: 'Review' },];
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <MyHeader renderButtons={HeaderButton} />
       <div style={{ position: 'relative' }}>
         <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
@@ -135,7 +135,7 @@ export default function QuickStart() {
           </Style.QuickStartPagesContainer>
         </Form>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -209,7 +209,7 @@ export function AllPages(props) {
 
   return (
     <Style.AllPagesContainer>
-      <Modal open={isLoading} footer={null} closable={false}>loading...</Modal>
+      <Modal open={isLoading} footer={null} closable={false} centered>loading...</Modal>
       <canvas ref={canvasRef} style={{ boxShadow: "0 0 10px #eeeeff", display: 'none' }}></canvas>
       <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
         {numPages !== null && Array.from(new Array(numPages), (el, index) => (
