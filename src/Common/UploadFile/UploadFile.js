@@ -4,13 +4,12 @@ import getScaledDim from "../../utils/getScaledDim";
 import { useAtom } from "jotai";
 import { bgFileAtom } from "../../data";
 
-import { pdfjs } from "react-pdf";
-import { Button, Input, message, Modal } from "antd";
+import { Button, Input } from "antd";
 import { UPLOAD_FILE } from "../../Constants/Constants";
+import { pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const canvasSize = 0;
-// const canvasSize = 500;
 
 const UploadFile = (props) => {
   const { form } = props;
@@ -26,7 +25,7 @@ const UploadFile = (props) => {
     const c = canvasRef.current;
     setCanvas(c);
     if (c) setCtx(c.getContext("2d"));
-  }, [canvasRef]);
+  }, []);
 
   /** image */
   const handleUploadImage = (event) => {
@@ -52,7 +51,7 @@ const UploadFile = (props) => {
   };
   /** pdf */
   const handleUploadPdf = (file) => {
-    console.log("🎲 ~ file: UploadFile.js ~ line 52 ~ file", file);
+    props.setPdfFile(file);
     if (file.type !== "application/pdf") {
       alert('請上傳 pdf');
       return;
@@ -61,33 +60,37 @@ const UploadFile = (props) => {
       alert('檔案大小限制 20MB');
       return;
     }
-    handleSetFileName(file.name);
+    handleSetFileName(file.name.replace('.pdf', ''));
+    props.setFileUploaded(true);
 
+    renderFile(file);
+  };
+
+  const renderFile = (file, pageNumber = 1) => {
     let fileReader = new FileReader();
     fileReader.onload = function () {
       const pdfData = new Uint8Array(this.result);
-      //? Using DocumentInitParameters object to load binary data.
+      // . Using DocumentInitParameters object to load binary data.
       const loadingTask = pdfjs.getDocument({ data: pdfData });
       loadingTask.promise.then(
         function (pdf) {
-          //? Fetch the first page
-          const pageNumber = 1;
+          // . Fetch the first page
           pdf.getPage(pageNumber).then(function (page) {
             const scale = 1.3;
             const viewport = page.getViewport({ scale });
 
-            //? Prepare canvas using PDF page dimensions
+            // . Prepare canvas using PDF page dimensions
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
-            //? Render PDF page into canvas context
+            // . Render PDF page into canvas context
             const renderContext = {
               canvasContext: ctx,
               viewport: viewport
             };
             const renderTask = page.render(renderContext);
-            renderTask.promise.then(function () {
-              console.log("Page rendered");
+            renderTask.promise.then(() => {
+              handleConvertToImage();
             });
           });
         },
@@ -99,6 +102,13 @@ const UploadFile = (props) => {
     };
     fileReader.readAsArrayBuffer(file);
   };
+
+  useEffect(() => {
+    if (!props.pdfFile) return;
+    // TODO
+    // handleConvertToImage();
+    renderFile(props.pdfFile, props.pageNumber);
+  }, [props.pageNumber]);
 
   /** 輸出成圖片 */
   const handleConvertToImage = () => {
@@ -116,10 +126,6 @@ const UploadFile = (props) => {
   return (
     <>
       <div style={{ textAlign: "center", position: 'relative', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        {/* <div style={{ marginBottom: `1rem` }}>
-        上傳 Image:
-        <input type="file" onChange={handleUploadImage} />
-        </div> */}
         <div>
           <div
             className="c-primary"
@@ -141,10 +147,6 @@ const UploadFile = (props) => {
               accept=".pdf" type="file" onChange={(event) => handleUploadPdf(event.target.files[0])} />
           </div>
         </div>
-        {/* <div>
-          <Button onClick={handleConvertToImage} disabled={!fileName}>下一步</Button>
-        </div> */}
-
         {/* <img src={src} alt="imagePdf" /> */}
       </div>
       {/* 預覽 */}

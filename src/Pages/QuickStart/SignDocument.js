@@ -7,6 +7,7 @@ import Signbox from '../../Common/Signbox/Signbox';
 import Textbox from '../../Common/Signbox/Textbox';
 import Datebox from '../../Common/Signbox/Datebox';
 import { ReactComponent as Sign } from "../../Atoms/Icons/Sign.svg";
+import { ReactComponent as TextT } from "../../Atoms/Icons/T.svg";
 import { ReactComponent as Text } from "../../Atoms/Icons/Text.svg";
 import { ReactComponent as Date } from "../../Atoms/Icons/Date.svg";
 import { ReactComponent as Image } from "../../Atoms/Icons/Image.svg";
@@ -19,19 +20,18 @@ export default function SignDocument(props) {
   const [isDateModalVisible, setIsDateModalVisible] = useState(false);
   const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const [isEditFileName, setIsEditFileName] = useState(false);
-  const { form, headerTwoRef } = props;
+  const { form, headerTwoRef, setPreviewSrcs, previewSrcs, toPreview, prevPage, setPrevPage } = props;
   return (
     <section>
       <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />
       <Style.SectionContainer style={{ background: 'none' }}>
         <div>
-          <h1 className='c-primary'>Sign</h1>
           <div ref={headerTwoRef}></div>
           {isEditFileName
             ? (
-              <Row typeof='flex' justify='center' alignItems='center'>
+              <Row typeof='flex' justify='center' >
                 <Col>
-                  <Form.Item name="newFileName">
+                  <Form.Item name="fileName">
                     <Input defaultValue={form.getFieldValue('newFileName')} />
                   </Form.Item>
                 </Col>
@@ -42,7 +42,8 @@ export default function SignDocument(props) {
             ) : (
               <h2 className='c-primary' style={{ alignItems: 'center' }}>{form.getFieldValue('newFileName')} <EditOutlined onClick={() => setIsEditFileName(!isEditFileName)} style={{ cursor: 'pointer' }} /></h2>
             )}
-          <Output toDownload={props.toDownload} />
+          <Output prevPage={prevPage} setPrevPage={setPrevPage} toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} toDownload={props.toDownload} pageNumber={props.pageNumber} form={form} />
+
           <Modal
             open={isSignModalVisible}
             onCancel={() => setIsSignModalVisible(false)}
@@ -74,7 +75,7 @@ export default function SignDocument(props) {
           </Style.DateModal>
           <Modal
             open={isImageModalVisible}
-            onCancel={() => isImageModalVisible(false)}
+            onCancel={() => setIsImageModalVisible(false)}
             onOk={() => setIsImageModalVisible(false)}
             title={<h2 className="c-primary">上傳圖片</h2>}
             footer={null}
@@ -97,7 +98,9 @@ export function SignTools(props) {
         <div style={{ color: '#1C4F6D' }}>Sign</div>
       </div>
       <div className='tool' onClick={() => setIsTextModalVisible(true)}>
+        <Icon component={TextT} style={{ position: 'absolute', transform: 'scale(0.5) translateX(25%)' }} />
         <Icon component={Text} />
+        {/* <img src="../../Atoms/Icons/Text.png" alt='text' /> */}
         <div style={{ color: '#1C4F6D' }}>Text</div>
       </div>
       <div className='tool' onClick={() => setIsDateModalVisible(true)}>

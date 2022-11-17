@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home";
+import About from "./Pages/About/About";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import NotFound from "./Pages/NotFound/NotFound";
 import UploadPage from "./Pages/UploadPage/UploadPage";
@@ -18,7 +19,7 @@ function App() {
 function Content() {
   return (
     <Routes>
-      <Route path="/*" element={<Home />} />
+      <Route path="/*" element={<About />} />
       <Route path="/quickstart" element={<QuickStart />} />
       <Route path="/upload" element={<UploadPage />} />
       <Route path="/dashboard/*" element={<Dashboard />} />

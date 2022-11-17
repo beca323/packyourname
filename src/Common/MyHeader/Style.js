@@ -6,7 +6,7 @@ color: #fff;
 display: flex;
 position: fixed;
 top: 0;
-z-index: 2;
+z-index: 4;
 width: 100%;
 justify-content: space-between;
 align-items: center;

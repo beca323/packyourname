@@ -11,16 +11,16 @@ export default function Home() {
 
   const renderButtons = () => (
     <>
-      <Button onClick={() => navigate("/login")}>Log In</Button>
-      <Button onClick={() => navigate("/signup")}>Sign Up</Button>
+      {/* <Button onClick={() => navigate("/login")}>Log In</Button>
+      <Button onClick={() => navigate("/signup")}>Sign Up</Button> */}
     </>
   );
   return (
     <>
       <MyHeader renderButtons={renderButtons} />
-      <div style={{ padding: "2rem" }}>
+      <div style={{ height: 'calc(100vh - 60px)' }}>
         <Routes>
-          <Route path="" element={<About />} />
+          {/* <Route path="" element={<About />} /> */}
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
         </Routes>

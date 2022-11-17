@@ -19,6 +19,11 @@ const Textbox = (props) => {
     if (c) setCtx(c.getContext("2d"));
   }, [canvasRef]);
 
+  //. 清除 */
+  const handleClear = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
   //. 轉圖片 */
   const handleConvertToImage = () => {
     const image = canvas.toDataURL();
@@ -28,6 +33,7 @@ const Textbox = (props) => {
   };
 
   const handleSave = () => {
+    handleClear();
     ctx.font = '30px Comic Sans MS';
     ctx.textAlign = 'center';
     ctx.fillText(inputText, canvasSize / 2, canvasSize / 4);
@@ -44,8 +50,17 @@ const Textbox = (props) => {
         height={canvasSize * 0.4}
       ></canvas>
       <Input onChange={(e) => setInputText(e.target.value)} />
-      <Button onClick={props.onCancel}>Cancel</Button>
-      <Button onClick={handleSave}>OK</Button>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', padding: '0.5rem' }}>
+        <Button
+          style={{ border: 'none', borderRadius: '4px', lineHeight: '2rem', height: 'fit-content' }}
+          className="c-primary"
+          onClick={props.onCancel}>Cancel</Button>
+        <Button
+          style={{ border: 'none', borderRadius: '4px', lineHeight: '2rem', height: 'fit-content' }}
+          className="bg-green"
+          onClick={handleSave}>OK</Button>
+      </div>
 
       {/* {src && (
         <img

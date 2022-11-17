@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAtom } from "jotai";
 import { bgFileAtom, signAtom } from "../../data";
-import { Wrapper, Main, OutputCanvas } from "./Style";
+import { OutputCanvas } from "./Style";
 import { fabric } from "fabric";
 import { Button } from "antd";
 import jsPDF from "jspdf";
@@ -20,7 +20,8 @@ const Output = (props) => {
   useEffect(() => {
     const c = new fabric.Canvas(mainRef.current);
     setCanvas(c);
-  }, [mainRef]);
+  }, []);
+  // }, [mainRef, props.pageNumber]);
 
   // . 填上簽名 */
   useEffect(() => {
@@ -29,34 +30,36 @@ const Output = (props) => {
         img.scaleToWidth(100);
         img.scaleToHeight(150);
         canvas.add(img).renderAll();
+        canvas.moveTo(img, 1);
       });
     }
-  }, [canvas, signData]);
+  }, [signData]);
 
   // . 填上背景檔案 */
   useEffect(() => {
-    if (canvas && bgFileData) {
-      fabric.Image.fromURL(bgFileData, (img) => {
-        canvas.setBackgroundImage(bgFileData).renderAll();
+    if (props.previewSrcs && props.previewSrcs[props.pageNumber - 1]) {
+      fabric.Image.fromURL(props.previewSrcs[props.pageNumber - 1], (img) => {
+        canvas.setBackgroundImage(props.previewSrcs[props.pageNumber - 1]).renderAll();
         canvas.setHeight(img.height);
         canvas.setWidth(img.width);
-        scaleAndPositionImage(img);
       });
+    } else {
+      if (canvas && bgFileData) {
+        fabric.Image.fromURL(bgFileData, (img) => {
+          canvas.setBackgroundImage(bgFileData).renderAll();
+          canvas.setHeight(img.height);
+          canvas.setWidth(img.width);
+        });
+      }
     }
-  }, [canvas, bgFileData]);
+  }, [bgFileData, props.pageNumber]);
 
   useEffect(() => {
-    const { toDownload } = props;
-    if (!toDownload) return;
-    download();
-  }, [props.toDownload]);
-
-  // useEffect(() => {
-  //   window.addEventListener("keydown", handleUserKeyPress);
-  //   return () => {
-  //     window.removeEventListener("keydown", handleUserKeyPress);
-  //   };
-  // });
+    window.addEventListener("keydown", handleUserKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleUserKeyPress);
+    };
+  });
 
   // . 縮放 */
   const scaleAndPositionImage = (bgImage) => {
@@ -97,56 +100,60 @@ const Output = (props) => {
 
   // . 監聽刪除 */
   const handleUserKeyPress = (e) => {
-    console.log(e, e.keyCode);
-    if (e.keyCode === 8) {
+    if (e.keyCode === 8 || e.keyCode === 46) {
       deleteSelectedObjectsFromCanvas();
     }
   };
 
   // . 刪除選取物件 */
   const deleteSelectedObjectsFromCanvas = () => {
-    console.log("canvas", canvas);
-    if (canvas) {
-      const activeObject = canvas.getActiveObject();
-      const activeGroup = canvas.getActiveGroup();
-
-      console.log("activeObject", activeObject);
-      console.log("activeGroup", activeGroup);
-      if (activeObject) {
-        canvas.remove(activeObject);
-      } else if (activeGroup) {
-        const objectsInGroup = activeGroup.getObjects();
-        canvas.discardActiveGroup();
-        objectsInGroup.forEach(function (object) {
-          canvas.remove(object);
-        });
-      }
+    function getSelection() {
+      return canvas.getActiveObject() === null ? canvas.getActiveGroup() : canvas.getActiveObject();
     }
+    canvas.remove(getSelection());
   };
 
   // . 下載 */
-  const download = () => {
-    const dataURL = canvas.toDataURL({ format: "png" });
-    const pdf = new jsPDF();
-    pdf.addImage(dataURL, 'JPED', 0, 0);
-    pdf.save('file.pdf');
+  // const download = () => {
+  //   const dataURL = canvas.toDataURL({ format: "png" });
+  //   const pdf = new jsPDF();
+  //   pdf.addImage(dataURL, 'JPEG', 0, 0);
 
-    // const link = document.createElement("a");
-    // link.download = "my-image.png";
-    // link.href = dataURL;
-    // link.target = "_blank";
-    // document.body.appendChild(link);
-    // link.click();
-    // link.parentNode.removeChild(link);
+  //   const { form } = props;
+  //   const fileName = form.getFieldValue('fileName');
+  //   pdf.save(fileName ? `${fileName}.pdf` : 'PackYourName.pdf');
+  // };
 
+  const handleClickTrans = (page) => {
+    const image = canvas.toDataURL();
+    let tempSrcs = props.previewSrcs;
+    tempSrcs[page - 1] = image;
+    props.setPreviewSrcs(tempSrcs);
   };
+
+  useEffect(() => {
+    if (!canvas || !canvas._objects) return;
+    handleClickTrans(props.prevPage);
+
+  }, [props.pageNumber]);
+
+  useEffect(() => {
+    if (props.toPreview) {
+      handleClickTrans(props.pageNumber);
+    }
+  }, [props.toPreview]);
+
+  useEffect(() => {
+    // deleteSelectedObjectsFromCanvas();
+  }, [props.pageNumber]);
 
   return (
     <>
+      {/* <Button onClick={handleClickTrans}>transform</Button> */}
+      {/* <Button onClick={handleActiveAll}>active all</Button> */}
       <OutputCanvas>
         <canvas ref={mainRef} style={{ margin: '1rem' }}></canvas>
       </OutputCanvas>
-      <Button onClick={download} style={{ display: 'none' }}>下載</Button>
     </>
   );
 };
