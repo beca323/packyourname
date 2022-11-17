@@ -4,9 +4,9 @@ import getScaledDim from "../../utils/getScaledDim";
 import { useAtom } from "jotai";
 import { bgFileAtom } from "../../data";
 
-import { Document, Page, pdfjs } from "react-pdf";
-import { Button, Input, message, Modal } from "antd";
+import { Button, Input } from "antd";
 import { UPLOAD_FILE } from "../../Constants/Constants";
+import { pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const canvasSize = 0;
@@ -89,9 +89,7 @@ const UploadFile = (props) => {
               viewport: viewport
             };
             const renderTask = page.render(renderContext);
-            renderTask.promise.then(function () {
-              console.log("Page rendered");
-            }).then(() => {
+            renderTask.promise.then(() => {
               handleConvertToImage();
             });
           });

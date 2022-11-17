@@ -32,26 +32,27 @@ const Output = (props) => {
         canvas.add(img).renderAll();
         canvas.moveTo(img, 1);
       });
-    } 
+    }
   }, [signData]);
 
   // . 填上背景檔案 */
   useEffect(() => {
-    if (canvas && bgFileData) {
-      fabric.Image.fromURL(bgFileData, (img) => {
-        canvas.setBackgroundImage(bgFileData).renderAll();
+    if (props.previewSrcs && props.previewSrcs[props.pageNumber - 1]) {
+      fabric.Image.fromURL(props.previewSrcs[props.pageNumber - 1], (img) => {
+        canvas.setBackgroundImage(props.previewSrcs[props.pageNumber - 1]).renderAll();
         canvas.setHeight(img.height);
         canvas.setWidth(img.width);
-        // scaleAndPositionImage(img);
       });
+    } else {
+      if (canvas && bgFileData) {
+        fabric.Image.fromURL(bgFileData, (img) => {
+          canvas.setBackgroundImage(bgFileData).renderAll();
+          canvas.setHeight(img.height);
+          canvas.setWidth(img.width);
+        });
+      }
     }
   }, [bgFileData, props.pageNumber]);
-
-  // useEffect(() => {
-  //   const { toDownload } = props;
-  //   if (!toDownload) return;
-  //   download();
-  // }, [props.toDownload]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleUserKeyPress);
@@ -123,22 +124,33 @@ const Output = (props) => {
   //   pdf.save(fileName ? `${fileName}.pdf` : 'PackYourName.pdf');
   // };
 
-  const handleClickTrans = () => {
+  const handleClickTrans = (page) => {
     const image = canvas.toDataURL();
     let tempSrcs = props.previewSrcs;
-    tempSrcs[props.pageNumber - 1] = image;
+    tempSrcs[page - 1] = image;
     props.setPreviewSrcs(tempSrcs);
   };
 
   useEffect(() => {
-    if (props.pageNumber === 0 || !canvas) return;
-    if (!props.toPreview) return;
-    handleClickTrans();
-  }, [props.pageNumber, props.toPreview]);
+    if (!canvas || !canvas._objects) return;
+    handleClickTrans(props.prevPage);
+
+  }, [props.pageNumber]);
+
+  useEffect(() => {
+    if (props.toPreview) {
+      handleClickTrans(props.pageNumber);
+    }
+  }, [props.toPreview]);
+
+  useEffect(() => {
+    // deleteSelectedObjectsFromCanvas();
+  }, [props.pageNumber]);
 
   return (
     <>
-      <Button onClick={handleClickTrans}>test!!</Button>
+      {/* <Button onClick={handleClickTrans}>transform</Button> */}
+      {/* <Button onClick={handleActiveAll}>active all</Button> */}
       <OutputCanvas>
         <canvas ref={mainRef} style={{ margin: '1rem' }}></canvas>
       </OutputCanvas>

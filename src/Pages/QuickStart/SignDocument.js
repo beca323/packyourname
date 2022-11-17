@@ -20,7 +20,7 @@ export default function SignDocument(props) {
   const [isDateModalVisible, setIsDateModalVisible] = useState(false);
   const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const [isEditFileName, setIsEditFileName] = useState(false);
-  const { form, headerTwoRef, setPreviewSrcs, previewSrcs, toPreview } = props;
+  const { form, headerTwoRef, setPreviewSrcs, previewSrcs, toPreview, prevPage, setPrevPage } = props;
   return (
     <section>
       <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />
@@ -42,7 +42,8 @@ export default function SignDocument(props) {
             ) : (
               <h2 className='c-primary' style={{ alignItems: 'center' }}>{form.getFieldValue('newFileName')} <EditOutlined onClick={() => setIsEditFileName(!isEditFileName)} style={{ cursor: 'pointer' }} /></h2>
             )}
-          <Output toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} toDownload={props.toDownload} pageNumber={props.pageNumber} form={form} />
+          <Output prevPage={prevPage} setPrevPage={setPrevPage} toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} toDownload={props.toDownload} pageNumber={props.pageNumber} form={form} />
+
           <Modal
             open={isSignModalVisible}
             onCancel={() => setIsSignModalVisible(false)}

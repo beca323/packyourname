@@ -89,7 +89,8 @@ z-index: 2;
   margin: 4px 16px;
   border-radius: 4px;
   transition: .1s all;
-  .react-pdf__Page__canvas{
+  width: 112px;
+  .react-pdf__Page__canvas, img{
     box-shadow: 0px 0px 5px 0px #00000040;
   }
   &:hover , &.active{
@@ -102,7 +103,7 @@ z-index: 2;
     display: none;
   }
 }
-.react-pdf__Page__canvas{
+.react-pdf__Page__canvas, img{
   box-shadow: 0px 0px 10px #00000011;
 }
 .react-pdf__Page__canvas , .react-pdf__Page__textContent{
