@@ -30,7 +30,7 @@ export default function UploadNewDocument(props) {
             <div style={{ display: "flex" }}>Upload Document</div>
             <UploadFile setPreviewSrcs={props.setPreviewSrcs} previewSrcs={props.previewSrcs} pageNumber={props.pageNumber} pageCount={pageCount} form={form} setFileUploaded={props.setFileUploaded} setPdfFile={props.setPdfFile} pdfFile={props.pdfFile} />
           </div>
-          <Style.SubSection>
+          {/* <Style.SubSection>
             <div style={{ display: "flex" }}>Signatory</div>
             <Row gutter={32}>
               <Col>
@@ -58,7 +58,7 @@ export default function UploadNewDocument(props) {
             >
               <Input placeholder='Email' />
             </Form.Item>
-          </Style.SubSection>
+          </Style.SubSection> */}
         </div>
       </Style.SectionContainer>
     </section >

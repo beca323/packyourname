@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 function MyHeader(props) {
   const navigate = useNavigate();
 
-  const { renderButtons } = props;
+  const { renderButtons, showName } = props;
   return (
     <>
       <div style={{ height: '60px', opacity: 0 }}>.</div>
       <Style.MyHeader>
-        <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Pack Your Name</div>
+        {showName && <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Pack Your Name</div>}
         {renderButtons
           ? <div>{renderButtons()}</div>
           : <div style={{ opacity: 0 }}>.</div>}
@@ -21,10 +21,12 @@ function MyHeader(props) {
 
 MyHeader.protoTypes = {
   renderButtons: PropTypes.func,
+  showName: PropTypes.bool,
 };
 
 MyHeader.defaultProps = {
   renderButtons: () => { },
+  showName: false,
 };
 
 export default MyHeader;

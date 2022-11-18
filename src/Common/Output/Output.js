@@ -3,8 +3,6 @@ import { useAtom } from "jotai";
 import { bgFileAtom, signAtom } from "../../data";
 import { OutputCanvas } from "./Style";
 import { fabric } from "fabric";
-import { Button } from "antd";
-import jsPDF from "jspdf";
 
 const canvasOriginalHeight = 1200;
 const canvasOriginalWidth = 800;
