@@ -8,26 +8,7 @@ overflow: hidden;
   transition: 0.5s all ease;
   transform: translateX(${props => props.count * -100}vw);
   min-width: 100vw;
-  // height: calc(100vh - 124px);
   height: 130vh;
-}
-`;
-
-export const MySteps = styled(Steps)`
-.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon{
-  background: linear-gradient(270.15deg, #006CAC 0%, #19A8B8 100%);
-}
-.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-icon .ant-steps-icon{
-  // opacity: 0;
-}
-.ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon{
-  // opacity: 0;
-}
-.ant-steps-item-finish .ant-steps-item-icon{
-  background: linear-gradient(270.15deg, #006CAC 0%, #19A8B8 100%);
-}
-.anticon{
-  color: #fff;
 }
 `;
 
@@ -77,6 +58,8 @@ background: #fff;
 position: fixed;
 box-shadow: 0px 0px 10px #00000011;
 z-index: 2;
+transition: all .2s ease;
+transform: ${props => props.visible ? 'translateX(-100%)' : ''};
 .react-pdf__Document{
   height: calc(100vh - 60px);
   overflow: auto;
@@ -110,5 +93,28 @@ z-index: 2;
   margin: 0 10px;
   width: 92px !important;
   height: ${1.414 * 92}px !important;
+}
+`;
+
+export const CustomSteps = styled(Steps)`
+.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot{
+  background: linear-gradient(-90deg, #006CAC 0%, #19A8B8 100%);
+  transform: scale(1.6);
+}
+.ant-steps-item-tail::after{
+  transform: translateY(2px);
+}
+.ant-steps-item-wait > .ant-steps-item-container > .ant-steps-item-tail::after, .ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-tail::after{
+  background-color: #9c9c9c;
+}
+.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon .ant-steps-icon-dot{
+  background-color: #026CAD;
+  transform: scale(1.6);
+}
+.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail::after{
+  background-color: #026CAD;
+}
+.ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title{
+  color: #026cad;
 }
 `;

@@ -11,6 +11,9 @@ import { useForm } from "antd/lib/form/Form";
 import { Document, Page } from "react-pdf";
 import jsPDF from "jspdf";
 import { pdfjs } from "react-pdf";
+import Icon from "@ant-design/icons";
+import { ReactComponent as Menu } from "../../Atoms/Icons/Menu.svg";
+import useMediaQuery from "../../Hooks/useMediaQuery/useMediaQuery";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const totalSectionCount = 3;
@@ -24,7 +27,9 @@ export default function QuickStart() {
   const [activePage, setActivePage] = useState(1);
   const [prevPage, setPrevPage] = useState(1);
   const [previewSrcs, setPreviewSrcs] = useState([]);
+  const [pagesVisible, setPagesVisible] = useState(false);
   const [form] = useForm();
+  const isSmall = useMediaQuery("(max-width: 800px)");
 
   const handleClickNext = () => {
     if (pageCount >= totalSectionCount - 1) return;
@@ -77,6 +82,38 @@ export default function QuickStart() {
     );
   };
 
+  const SmallHeaderButton = () => {
+    return (
+      <>
+        <Icon component={Menu} style={{ fontSize: '2rem' }} onClick={toggleMenu} />
+        {pageCount !== 0 &&
+          <MyButton className="bg-primary" onClick={handleClickBack} style={{ border: 'none', margin: '0 0.5rem' }}>
+            <ArrowLeftOutlined />
+            Back
+          </MyButton>
+        }
+        {pageCount !== totalSectionCount - 1 &&
+          <MyButton disabled={!fileUploaded} className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
+            Next
+            <ArrowRightOutlined />
+          </MyButton>
+        }
+        {
+          pageCount === totalSectionCount - 1 &&
+          <MyButton className="bg-primary" onClick={handleClickDone} style={{ border: 'none', margin: '0 0.5rem' }}>
+            Done
+          </MyButton>
+        }
+      </>
+    );
+  };
+
+  const toggleMenu = () => {
+    setPagesVisible(!pagesVisible);
+    console.debug('%cpagesVisible', 'color: #fcee84; font-size: 14px');
+    console.debug(pagesVisible);
+  };
+
   const INIT_FORM_VALUE = {
     fileName: null,
     newfileName: null,
@@ -88,26 +125,36 @@ export default function QuickStart() {
   };
 
   const steps = [{ title: 'Upload', stepTitle: 'Upload New Document' }, { title: 'Sign', stepTitle: 'Sign' }, { title: 'Review', stepTitle: 'Review' },];
+  const customDot = (dot, { status, index }) => (
+    <div style={{ background: '#9c9c9c', width: '12px', height: '12px', borderRadius: '50%', transform: 'translateX(-1px)' }}>
+      {dot}<span style={{ opacity: 0 }}>{status}</span>
+      {status === 'process' ? <div style={{ width: '10px', height: '10px', background: '#f2f8f9', transform: 'translateX(1px) translateY(-27px)', borderRadius: '50%' }}></div> : ''}
+    </div>
+  );
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <MyHeader renderButtons={HeaderButton} />
-      <div style={{ position: 'relative' }}>
+      <MyHeader renderButtons={isSmall ? SmallHeaderButton : HeaderButton} showName={!isSmall} />
+      <div style={{ position: 'relative', height: 'calc(100vh - 60px)', overflow: 'auto' }}>
         <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
-          console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
+          // console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
         }}>
           {pageCount === 1 && (
             <AllPages previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs}
               pdfFile={pdfFile} activePage={activePage} setActivePage={setActivePage}
-              setPrevPage={setPrevPage} />
+              setPrevPage={setPrevPage} isSmall={isSmall} pagesVisible={pagesVisible} />
           )}
           <div style={{ display: 'flex', padding: '0 1rem' }} >
-            {!visible && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
-            <div style={{ width: '80%', maxWidth: '380px', margin: '1rem auto' }}>
-              <Style.MySteps current={pageCount}>
+            {!visible && !isSmall && <h2 style={{ position: 'absolute', fontWeight: 'bold', lineHeight: '60px' }} className="c-primary">{steps[pageCount].stepTitle}</h2>}
+            <div style={{ width: '100%', maxWidth: isSmall ? '' : '410px', transform: isSmall ? 'scale(0.9) translateX(-5%)' : '', margin: '1rem auto' }}>
+              <Style.CustomSteps
+                current={pageCount}
+                progressDot={customDot}
+                responsive={false}
+              >
                 {steps.map((item) => (
                   <Steps.Step key={item.title} title={item.title} />
                 ))}
-              </Style.MySteps>
+              </Style.CustomSteps>
             </div>
           </div>
 
@@ -140,7 +187,7 @@ export default function QuickStart() {
 }
 
 export function AllPages(props) {
-  const { pdfFile, activePage, setActivePage, setPreviewSrcs, setPrevPage } = props;
+  const { pdfFile, activePage, setActivePage, setPreviewSrcs, setPrevPage, isSmall, pagesVisible } = props;
   const [numPages, setNumPages] = useState(null);
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
@@ -208,7 +255,7 @@ export function AllPages(props) {
   }, []);
 
   return (
-    <Style.AllPagesContainer>
+    <Style.AllPagesContainer visible={pagesVisible}>
       <Modal open={isLoading} footer={null} closable={false} centered>loading...</Modal>
       <canvas ref={canvasRef} style={{ boxShadow: "0 0 10px #eeeeff", display: 'none' }}></canvas>
       <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
