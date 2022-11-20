@@ -60,7 +60,7 @@ export default function QuickStart() {
         pdf.addPage();
       }
     });
-    const fileName = form.getFieldValue('fileName');
+    const fileName = form.getFieldValue('newFileName');
     pdf.save(fileName ? `${fileName}.pdf` : 'PackYourName.pdf');
   };
 

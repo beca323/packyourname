@@ -31,7 +31,7 @@ const Output = (props) => {
         img.scaleToWidth(100);
         img.scaleToHeight(150);
         canvas.add(img).renderAll();
-        canvas.moveTo(img, 1);
+        // canvas.moveTo(img, 1);
       });
     }
   }, [signData]);

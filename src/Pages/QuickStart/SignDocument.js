@@ -1,5 +1,5 @@
-import { EditOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, Modal, Row } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
+import { Col, Form, Input, Modal, Row } from 'antd';
 import React, { useState } from 'react';
 import Icon from "@ant-design/icons";
 import Output from '../../Common/Output/Output';
@@ -21,7 +21,6 @@ export default function SignDocument(props) {
   const { isSmall, form, headerTwoRef, setPreviewSrcs, previewSrcs, toPreview, prevPage, setPrevPage } = props;
   return (
     <section>
-      {/* {!isSmall && <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />} */}
       <Style.SectionContainer style={{ background: 'none' }}>
         <div>
           <div ref={headerTwoRef}></div>
@@ -29,7 +28,7 @@ export default function SignDocument(props) {
             ? (
               <Row typeof='flex' justify='center' >
                 <Col>
-                  <Form.Item name="fileName">
+                  <Form.Item name="newFileName">
                     <Input defaultValue={form.getFieldValue('newFileName')} />
                   </Form.Item>
                 </Col>
@@ -40,7 +39,7 @@ export default function SignDocument(props) {
             ) : (
               <h2 className='c-primary' style={{ alignItems: 'center' }}>{form.getFieldValue('newFileName')} <EditOutlined onClick={() => setIsEditFileName(!isEditFileName)} style={{ cursor: 'pointer' }} /></h2>
             )}
-          <Output prevPage={prevPage} setPrevPage={setPrevPage} toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} toDownload={props.toDownload} pageNumber={props.pageNumber} form={form} />
+          <Output prevPage={prevPage} setPrevPage={setPrevPage} toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} pageNumber={props.pageNumber} form={form} />
 
           <Modal
             open={isSignModalVisible}
