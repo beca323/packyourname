@@ -82,7 +82,7 @@ export default function QuickStart() {
         {
           pageCount === totalSectionCount - 1 &&
           <MyButton className="bg-primary" onClick={handleClickDone} style={{ border: 'none', margin: '0 0.5rem' }}>
-            Done
+            Download
           </MyButton>
         }
       </>
@@ -101,6 +101,7 @@ export default function QuickStart() {
   const BottomButtons = () => {
     return (
       <Style.BottomButtons>
+        {pageCount === 1 && OpenSignTool()}
         {pageCount !== totalSectionCount - 1 &&
           <MyButton disabled={!fileUploaded} className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
             Next
@@ -110,7 +111,7 @@ export default function QuickStart() {
         {
           pageCount === totalSectionCount - 1 &&
           <MyButton className="bg-primary" onClick={handleClickDone} style={{ border: 'none', margin: '0 0.5rem' }}>
-            Done
+            Download
           </MyButton>
         }
       </Style.BottomButtons>
@@ -195,11 +196,11 @@ export default function QuickStart() {
               isDateModalVisible={isDateModalVisible} isTextModalVisible={isTextModalVisible} isSignModalVisible={isSignModalVisible} isImageModalVisible={isImageModalVisible}
               isSmall={isSmall} prevPage={prevPage} setPrevPage={setPrevPage} toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} pageNumber={activePage} pdfFile={pdfFile} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
-            <section style={{ height: 'fit-content' }}>
+            <section style={{ height: 'fit-content', paddingBottom: '200px' }}>
               <Style.SectionContainer style={{ background: visible ? '#fff' : 'none' }}>
                 <div style={{ margin: '1rem auto', maxWidth: '800px' }}>
                   <h1 className='c-primary'>Review</h1>
-                  <div style={{ display: 'flex' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
                     {previewSrcs.map((src, index) => {
                       return (
                         <div key={index} style={{ transform: 'scale(0.95) ' }}>
@@ -207,6 +208,7 @@ export default function QuickStart() {
                         </div>
                       );
                     })}
+                    <div> -- END -- </div>
                   </div>
                 </div>
               </Style.SectionContainer>
@@ -216,7 +218,7 @@ export default function QuickStart() {
         </Form>
       </div>
       {!isSmall && pageCount === 1 && <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />}
-      {isSmall && pageCount === 1 && OpenSignTool()}
+      {/* {isSmall && pageCount === 1 && OpenSignTool()} */}
       {isSmall && BottomButtons()}
     </div>
   );

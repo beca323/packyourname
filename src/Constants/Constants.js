@@ -1,3 +1,3 @@
 export const UPLOAD_FILE = {
-  LIMIT_SIZE: 20000000 //20MB
+  LIMIT_SIZE: 10 * 1024 * 1024 //20MB
 };
