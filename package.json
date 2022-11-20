@@ -8,7 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.23.6",
-    "fabric": "^4.6.0",
+    "fabric": "^5.2.4",
     "firebase": "^9.12.1",
     "gh-pages": "^4.0.0",
     "jotai": "^1.9.0",
