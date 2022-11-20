@@ -39,7 +39,7 @@ const Imagebox = (props) => {
       return;
     }
     if (f.size > UPLOAD_FILE.LIMIT_SIZE) {
-      alert('檔案大小限制 20MB');
+      alert('檔案大小限制 10MB');
       return;
     }
     setFileName(f.name);

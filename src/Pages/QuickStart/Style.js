@@ -164,8 +164,8 @@ color: #fff;
 font-size: 1.6rem;
 cursor: pointer;
 position: absolute;
-top: 87vh;
 right: 1rem;
+bottom: 4rem;
 `;
 
 export const SignToolsModal = styled(Modal)`

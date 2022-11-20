@@ -57,7 +57,7 @@ const UploadFile = (props) => {
       return;
     }
     if (file.size > UPLOAD_FILE.LIMIT_SIZE) {
-      alert('檔案大小限制 20MB');
+      alert('檔案大小限制 10MB');
       return;
     }
     handleSetFileName(file.name.replace('.pdf', ''));

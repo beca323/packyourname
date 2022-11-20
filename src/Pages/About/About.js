@@ -5,6 +5,7 @@ import React from "react";
 import Lottie from "react-lottie";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as Logo } from "../../Atoms/Icons/Logo.svg";
+import logo from "../../Atoms/Icons/logo.png";
 import styled from "styled-components";
 import * as animationData from "../../data/sign.json";
 import useMediaQuery from "../../Hooks/useMediaQuery/useMediaQuery";
@@ -41,7 +42,10 @@ export default function Home() {
   const renderIntro = () => {
     return (
       <>
-        <h1 style={{ textAlign: 'start', color: '#fff' }}>關於我們</h1>
+        <h1 style={{ textAlign: 'start', color: '#fff' }}>
+          不限時間、不限地點，<br />
+          隨心所欲辦公與洽談。
+        </h1>
         <p style={{ textAlign: 'start', color: '#fff' }}>Pack your name是一個新興線上簽名平台，讓您可以不限時間、不限地點，隨心所欲辦公與洽談。
           平台兼顧「簡約、環保、時尚」的設計理念，讓用戶在使用過程中能獲得「便利、省時、護眼」的使用者體驗。所節省下的金錢與時間，更可以讓您舒心體驗生活。
           現在就讓Pack your name ，Open your life吧！</p>
@@ -57,7 +61,7 @@ export default function Home() {
   return (
     <About>
       <div style={{ display: 'flex', gap: '1.2rem', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <Icon component={Logo} style={{ fontSize: '6rem' }} />
+        <img src={logo} alt="logo" />
         <h2 style={{ color: '#fff', transform: 'translateY(10px)' }}>Pack Your Name</h2>
         <div style={{ width: '1rem', opacity: '0' }}></div>
       </div>

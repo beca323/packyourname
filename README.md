@@ -1,70 +1,64 @@
-# Getting Started with Create React App
+### 2022 The F2E Week 2
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<hr/>
 
-## Available Scripts
+團體組 / LR Slashie
 
-In the project directory, you can run:
+Demo Link: <a href="https://beca323.github.io/packyourname">Pack Your Name</a>
 
-### `npm start`
+<br/>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Project Name
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Pack Your Name
 
-### `npm test`
+> 不限時間、不限地點，<br/>
+> 隨心所欲辦公與洽談。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<br/>
 
-### `npm run build`
+### Description
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> 平台兼顧「簡約、環保、時尚」的設計理念，所節省下的金錢與時間，更可以讓您舒心體驗生活。<br/>
+> 現在就讓 Pack your name ，Open your life 吧！
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<br/>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### UI Spec
 
-### `npm run eject`
+Link: <a href="https://www.figma.com/file/S8EubX6XXIyqxD4aLcXIfM/PackYourName?node-id=0%3A1">Pack Your Name - Figma</a>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<img src="./src/Image/cover.png" />
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<img src="./src/Image/cover2.png" />
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<br/>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Frontend Technologies
 
-## Learn More
+- React.js
+- Ant Design
+- jspdf
+- fabric
+- react-pdf
+- react-lottie
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<br/>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Get Started
 
-### Code Splitting
+This project was started with `create-react-app` .
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+install
 
-### Analyzing the Bundle Size
+```
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+run
 
-### Making a Progressive Web App
+```
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+http://localhost:3000/
