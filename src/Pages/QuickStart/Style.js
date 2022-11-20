@@ -31,7 +31,7 @@ export const SignTools = styled.div`
 z-index: 2;
 position: absolute;
 right: 0;
-top: 20vh;
+top: 35vh;
 padding: 0 1rem;
 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 background: #fff;
@@ -47,6 +47,28 @@ svg{
   margin: 1rem auto;
 }
 `;
+
+export const SmallSignTools = styled.div`
+z-index: 2;
+position: absolute;
+// padding: 0 1rem;
+// background: #fff;
+border-radius: 10px 0 0 10px;
+svg{
+  font-size: 2rem;
+  fill: #fff;
+}
+.tool{
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem auto;
+  > div{
+    text-align: center;
+  }
+}
+`;
+
 export const DateModal = styled(Modal)`
 .ant-modal-close-x{
   display: none;
@@ -116,5 +138,47 @@ export const CustomSteps = styled(Steps)`
 }
 .ant-steps-item-process > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title{
   color: #026cad;
+}
+`;
+
+export const BottomButtons = styled.div`
+position: absolute;
+bottom: 0;
+background: #fff;
+width: 100%;
+padding: 10px;
+> button{
+  width: 90%;
+}
+`;
+
+export const OpenSignTool = styled.div`
+background-color: #12C696;
+width: 3rem;
+height: 3rem;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+color: #fff;
+font-size: 1.6rem;
+cursor: pointer;
+position: absolute;
+top: 87vh;
+right: 1rem;
+`;
+
+export const SignToolsModal = styled(Modal)`
+.ant-modal-content{
+  border-radius: 200px;
+}
+.ant-modal-body{
+  padding: 0;
+}
+.close{
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 0.5rem;
+  font-size: 1.5rem;
 }
 `;

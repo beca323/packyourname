@@ -10,7 +10,9 @@ function MyHeader(props) {
     <>
       <div style={{ height: '60px', opacity: 0 }}>.</div>
       <Style.MyHeader>
-        {showName && <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Pack Your Name</div>}
+        {showName && <div style={{ cursor: 'pointer', textAlign: 'start' }}>
+          <div onClick={() => navigate('/')} style={{ width: 'fit-content' }}>Pack Your Name</div>
+        </div>}
         {renderButtons
           ? <div>{renderButtons()}</div>
           : <div style={{ opacity: 0 }}>.</div>}

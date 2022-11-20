@@ -1,11 +1,11 @@
-import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, ArrowRightOutlined, CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form, Modal, Steps } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import MyHeader from "../../Common/MyHeader/MyHeader";
 import * as Style from "./Style";
 import useOnScreen from "../../Hooks/useOnScreen/useOnScreen";
 import UploadNewDocument from "./UploadNewDocument";
-import SignDocument from "./SignDocument";
+import SignDocument, { SignTools, SmallSignTools } from "./SignDocument";
 import { MyButton } from "../../Atoms/Components/Button";
 import { useForm } from "antd/lib/form/Form";
 import { Document, Page } from "react-pdf";
@@ -14,6 +14,7 @@ import { pdfjs } from "react-pdf";
 import Icon from "@ant-design/icons";
 import { ReactComponent as Menu } from "../../Atoms/Icons/Menu.svg";
 import useMediaQuery from "../../Hooks/useMediaQuery/useMediaQuery";
+import { useNavigate } from "react-router-dom";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const totalSectionCount = 3;
@@ -28,8 +29,14 @@ export default function QuickStart() {
   const [prevPage, setPrevPage] = useState(1);
   const [previewSrcs, setPreviewSrcs] = useState([]);
   const [pagesVisible, setPagesVisible] = useState(false);
+  const [signToolVisible, setSignToolVisible] = useState(false);
   const [form] = useForm();
+  const [isSignModalVisible, setIsSignModalVisible] = useState(false);
+  const [isTextModalVisible, setIsTextModalVisible] = useState(false);
+  const [isDateModalVisible, setIsDateModalVisible] = useState(false);
+  const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const isSmall = useMediaQuery("(max-width: 800px)");
+  const navigate = useNavigate();
 
   const handleClickNext = () => {
     if (pageCount >= totalSectionCount - 1) return;
@@ -84,14 +91,16 @@ export default function QuickStart() {
 
   const SmallHeaderButton = () => {
     return (
-      <>
-        <Icon component={Menu} style={{ fontSize: '2rem' }} onClick={toggleMenu} />
-        {pageCount !== 0 &&
-          <MyButton className="bg-primary" onClick={handleClickBack} style={{ border: 'none', margin: '0 0.5rem' }}>
-            <ArrowLeftOutlined />
-            Back
-          </MyButton>
-        }
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+        {pageCount === 1 ? <Icon component={Menu} style={{ fontSize: '2rem' }} onClick={toggleMenu} /> : <br />}
+        {<CloseOutlined onClick={() => navigate('/')} style={{ fontSize: '2rem' }} />}
+      </div>
+    );
+  };
+
+  const BottomButtons = () => {
+    return (
+      <Style.BottomButtons>
         {pageCount !== totalSectionCount - 1 &&
           <MyButton disabled={!fileUploaded} className="bg-primary" onClick={handleClickNext} style={{ border: 'none', margin: '0 0.5rem' }}>
             Next
@@ -104,14 +113,35 @@ export default function QuickStart() {
             Done
           </MyButton>
         }
+      </Style.BottomButtons>
+    );
+  };
+
+  const OpenSignTool = () => {
+    return (
+      <>
+        <Style.OpenSignTool onClick={() => setSignToolVisible(!signToolVisible)}><PlusOutlined /></Style.OpenSignTool>
+        {signToolVisible && (
+          <Style.SignToolsModal
+            open={signToolVisible}
+            footer={null}
+            onCancel={() => setSignToolVisible(false)}
+            closable={false}
+            style={{ position: 'absolute', right: '1rem', top: '53vh' }}
+            width="3rem"
+          >
+            <div style={{ height: '21rem', position: 'relative', display: 'flex', justifyContent: 'center' }}>
+              <SmallSignTools setSignToolVisible={setSignToolVisible} setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />
+              <div className="close c-primary" onClick={() => { setSignToolVisible(false); }}><CloseOutlined /></div>
+            </div>
+          </Style.SignToolsModal>
+        )}
       </>
     );
   };
 
   const toggleMenu = () => {
     setPagesVisible(!pagesVisible);
-    console.debug('%cpagesVisible', 'color: #fcee84; font-size: 14px');
-    console.debug(pagesVisible);
   };
 
   const INIT_FORM_VALUE = {
@@ -138,7 +168,7 @@ export default function QuickStart() {
         <Form initialValues={INIT_FORM_VALUE} form={form} onValuesChange={(changedValue, allValue) => {
           // console.debug(`🎲 ~ file: QuickStart.js ~ line 64 ~ QuickStart ~ all`, allValue);
         }}>
-          {pageCount === 1 && (
+          {(pageCount === 1) && (
             <AllPages previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs}
               pdfFile={pdfFile} activePage={activePage} setActivePage={setActivePage}
               setPrevPage={setPrevPage} isSmall={isSmall} pagesVisible={pagesVisible} />
@@ -160,7 +190,10 @@ export default function QuickStart() {
 
           <Style.QuickStartPagesContainer count={pageCount}>
             <UploadNewDocument setPreviewSrcs={setPreviewSrcs} previewSrcs={previewSrcs} pageNumber={activePage} pdfFile={pdfFile} setPdfFile={setPdfFile} setFileUploaded={setFileUploaded} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
-            <SignDocument prevPage={prevPage} setPrevPage={setPrevPage} toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} pageNumber={activePage} pdfFile={pdfFile} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
+            <SignDocument
+              setIsDateModalVisible={setIsDateModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsImageModalVisible={setIsImageModalVisible}
+              isDateModalVisible={isDateModalVisible} isTextModalVisible={isTextModalVisible} isSignModalVisible={isSignModalVisible} isImageModalVisible={isImageModalVisible}
+              isSmall={isSmall} prevPage={prevPage} setPrevPage={setPrevPage} toPreview={toPreview} previewSrcs={previewSrcs} setPreviewSrcs={setPreviewSrcs} pageNumber={activePage} pdfFile={pdfFile} form={form} headerTwoRef={headerTwoRef} visible={visible} pageCount={pageCount} />
 
             <section style={{ height: 'fit-content' }}>
               <Style.SectionContainer style={{ background: visible ? '#fff' : 'none' }}>
@@ -182,17 +215,21 @@ export default function QuickStart() {
           </Style.QuickStartPagesContainer>
         </Form>
       </div>
+      {!isSmall && pageCount === 1 && <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />}
+      {isSmall && pageCount === 1 && OpenSignTool()}
+      {isSmall && BottomButtons()}
     </div>
   );
 }
 
 export function AllPages(props) {
-  const { pdfFile, activePage, setActivePage, setPreviewSrcs, setPrevPage, isSmall, pagesVisible } = props;
+  const { pdfFile, activePage, setActivePage, setPreviewSrcs, previewSrcs, setPrevPage, pagesVisible } = props;
   const [numPages, setNumPages] = useState(null);
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const [ctx, setCtx] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [srcs, setSrcs] = useState([]);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -236,7 +273,7 @@ export function AllPages(props) {
             });
           });
         },
-        function (reason) { console.error(reason); }
+        function (error) { console.error(error); }
       );
     };
     fileReader.readAsArrayBuffer(file);
@@ -254,6 +291,10 @@ export function AllPages(props) {
     if (c) setCtx(c.getContext("2d"));
   }, []);
 
+  useEffect(() => {
+    setSrcs(previewSrcs);
+  }, [activePage, previewSrcs]);
+
   return (
     <Style.AllPagesContainer visible={pagesVisible}>
       <Modal open={isLoading} footer={null} closable={false} centered>loading...</Modal>
@@ -263,7 +304,9 @@ export function AllPages(props) {
           <div className={activePage === index + 1 ? `one-page active` : `one-page`} key={index}
             onClick={() => handleChangePage(index)}
           >
-            {props.previewSrcs && props.previewSrcs[index] ? (<img style={{ width: '92px', margin: 'auto' }} src={props.previewSrcs[index]} alt="" />) : <Page key={`page_${index + 1}`} pageNumber={index + 1} />}
+            {props.previewSrcs && props.previewSrcs[index]
+              ? <img style={{ width: '92px', margin: 'auto' }} src={srcs[index]} alt="" />
+              : <Page key={`page_${index + 1}`} pageNumber={index + 1} />}
             <p style={{ color: '#A6A6A6', margin: '0', textAlign: 'end', paddingRight: '12px' }}>{index + 1} of {numPages}</p>
           </div>
         ))}

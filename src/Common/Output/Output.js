@@ -3,13 +3,16 @@ import { useAtom } from "jotai";
 import { bgFileAtom, signAtom } from "../../data";
 import { OutputCanvas } from "./Style";
 import { fabric } from "fabric";
+import useMediaQuery from "../../Hooks/useMediaQuery/useMediaQuery";
 
-const canvasOriginalHeight = 1200;
-const canvasOriginalWidth = 800;
+const canvasOriginalHeight = 0;
+const canvasOriginalWidth = 0;
 
 const Output = (props) => {
   const [signData] = useAtom(signAtom);
   const [bgFileData] = useAtom(bgFileAtom);
+  const isSmall = useMediaQuery("(max-width: 800px)");
+
 
   const mainRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
@@ -106,21 +109,12 @@ const Output = (props) => {
   // . 刪除選取物件 */
   const deleteSelectedObjectsFromCanvas = () => {
     function getSelection() {
-      return canvas.getActiveObject() === null ? canvas.getActiveGroup() : canvas.getActiveObject();
+      // return canvas.getActiveObject() === null ? canvas.getActiveGroup() : canvas.getActiveObject();
+      if (canvas.getActiveObject() === null) return;
+      return canvas.getActiveObject();
     }
     canvas.remove(getSelection());
   };
-
-  // . 下載 */
-  // const download = () => {
-  //   const dataURL = canvas.toDataURL({ format: "png" });
-  //   const pdf = new jsPDF();
-  //   pdf.addImage(dataURL, 'JPEG', 0, 0);
-
-  //   const { form } = props;
-  //   const fileName = form.getFieldValue('fileName');
-  //   pdf.save(fileName ? `${fileName}.pdf` : 'PackYourName.pdf');
-  // };
 
   const handleClickTrans = (page) => {
     const image = canvas.toDataURL();
@@ -132,7 +126,7 @@ const Output = (props) => {
   useEffect(() => {
     if (!canvas || !canvas._objects) return;
     handleClickTrans(props.prevPage);
-
+    canvas.clear();
   }, [props.pageNumber]);
 
   useEffect(() => {
@@ -141,15 +135,9 @@ const Output = (props) => {
     }
   }, [props.toPreview]);
 
-  useEffect(() => {
-    // deleteSelectedObjectsFromCanvas();
-  }, [props.pageNumber]);
-
   return (
     <>
-      {/* <Button onClick={handleClickTrans}>transform</Button> */}
-      {/* <Button onClick={handleActiveAll}>active all</Button> */}
-      <OutputCanvas>
+      <OutputCanvas scaledown={!!isSmall}>
         <canvas ref={mainRef} style={{ margin: '1rem' }}></canvas>
       </OutputCanvas>
     </>

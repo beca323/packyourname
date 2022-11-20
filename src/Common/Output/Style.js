@@ -22,7 +22,7 @@ const Main = styled("div")`
 `;
 
 export const OutputCanvas = styled('div')`
-transform: scale(0.8) translateX(-8%);
+transform: scale(${props => props.scaledown ? 0.48 : 0.8}) translateX(${props => props.scaledown ? '-55%' : '-5%'}) translateY(${props => props.scaledown ? '-5rem' : ''});
 > .canvas-container{
   > .upper-canvas{
     display: none;

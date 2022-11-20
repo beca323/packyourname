@@ -3,12 +3,13 @@ import styled from "styled-components";
 export const MyHeader = styled.div`
 padding: 0 2rem;
 color: #fff;
-display: flex;
+display: grid;
+// justify-content: space-between;
+grid-template-columns: 1fr auto;
 position: fixed;
 top: 0;
 z-index: 4;
 width: 100%;
-justify-content: space-between;
 align-items: center;
 height: 60px;
 background: linear-gradient(90deg, #006CAC 0%, #19A8B8 100%);

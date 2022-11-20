@@ -1,4 +1,4 @@
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Modal, Row } from 'antd';
 import React, { useState } from 'react';
 import Icon from "@ant-design/icons";
@@ -15,15 +15,13 @@ import * as Style from "./Style";
 import Imagebox from '../../Common/Signbox/Imagebox';
 
 export default function SignDocument(props) {
-  const [isSignModalVisible, setIsSignModalVisible] = useState(false);
-  const [isTextModalVisible, setIsTextModalVisible] = useState(false);
-  const [isDateModalVisible, setIsDateModalVisible] = useState(false);
-  const [isImageModalVisible, setIsImageModalVisible] = useState(false);
+  const { setIsDateModalVisible, setIsImageModalVisible, setIsTextModalVisible, setIsSignModalVisible } = props;
+  const { isDateModalVisible, isImageModalVisible, isTextModalVisible, isSignModalVisible } = props;
   const [isEditFileName, setIsEditFileName] = useState(false);
-  const { form, headerTwoRef, setPreviewSrcs, previewSrcs, toPreview, prevPage, setPrevPage } = props;
+  const { isSmall, form, headerTwoRef, setPreviewSrcs, previewSrcs, toPreview, prevPage, setPrevPage } = props;
   return (
     <section>
-      <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />
+      {/* {!isSmall && <SignTools setIsDateModalVisible={setIsDateModalVisible} setIsSignModalVisible={setIsSignModalVisible} setIsTextModalVisible={setIsTextModalVisible} setIsImageModalVisible={setIsImageModalVisible} />} */}
       <Style.SectionContainer style={{ background: 'none' }}>
         <div>
           <div ref={headerTwoRef}></div>
@@ -98,7 +96,7 @@ export function SignTools(props) {
         <div style={{ color: '#1C4F6D' }}>Sign</div>
       </div>
       <div className='tool' onClick={() => setIsTextModalVisible(true)}>
-        <Icon component={TextT} style={{ position: 'absolute', transform: 'scale(0.5) translateX(25%)' }} />
+        <Icon component={TextT} style={{ position: 'absolute', transform: 'scale(0.5) translateX(20%)' }} />
         <Icon component={Text} />
         {/* <img src="../../Atoms/Icons/Text.png" alt='text' /> */}
         <div style={{ color: '#1C4F6D' }}>Text</div>
@@ -112,5 +110,42 @@ export function SignTools(props) {
         <div style={{ color: '#1C4F6D' }}>Image</div>
       </div>
     </Style.SignTools>
+  );
+}
+
+export function SmallSignTools(props) {
+  const { setSignToolVisible, setIsSignModalVisible, setIsTextModalVisible, setIsDateModalVisible, setIsImageModalVisible } = props;
+  return (
+    <Style.SmallSignTools>
+      <div className='tool' onClick={() => {
+        setSignToolVisible(false);
+        setIsSignModalVisible(true);
+      }}>
+        <Icon component={Sign} />
+        <div style={{ color: '#1C4F6D' }}>Sign</div>
+      </div>
+      <div className='tool' onClick={() => {
+        setSignToolVisible(false);
+        setIsTextModalVisible(true);
+      }}>
+        <Icon component={TextT} style={{ position: 'absolute', transform: 'scale(0.5) translateX(20%)' }} />
+        <Icon component={Text} />
+        <div style={{ color: '#1C4F6D' }}>Text</div>
+      </div>
+      <div className='tool' onClick={() => {
+        setSignToolVisible(false);
+        setIsDateModalVisible(true);
+      }}>
+        <Icon component={Date} />
+        <div style={{ color: '#1C4F6D' }}>Date</div>
+      </div>
+      <div className='tool'>
+        <Icon component={Image} onClick={() => {
+          setSignToolVisible(false);
+          setIsImageModalVisible(true);
+        }} />
+        <div style={{ color: '#1C4F6D' }}>Image</div>
+      </div>
+    </Style.SmallSignTools>
   );
 }

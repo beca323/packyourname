@@ -40,9 +40,17 @@ export default function Home() {
 
   const renderIntro = () => {
     return (
-      <p style={{ textAlign: 'start', color: '#fff' }}>Pack your name是一個新興線上簽名平台，讓您可以不限時間、不限地點，隨心所欲辦公與洽談。
-        平台兼顧「簡約、環保、時尚」的設計理念，讓用戶在使用過程中能獲得「便利、省時、護眼」的使用者體驗。所節省下的金錢與時間，更可以讓您舒心體驗生活。
-        現在就讓Pack your name ，Open your life吧！</p>
+      <>
+        <h1 style={{ textAlign: 'start', color: '#fff' }}>關於我們</h1>
+        <p style={{ textAlign: 'start', color: '#fff' }}>Pack your name是一個新興線上簽名平台，讓您可以不限時間、不限地點，隨心所欲辦公與洽談。
+          平台兼顧「簡約、環保、時尚」的設計理念，讓用戶在使用過程中能獲得「便利、省時、護眼」的使用者體驗。所節省下的金錢與時間，更可以讓您舒心體驗生活。
+          現在就讓Pack your name ，Open your life吧！</p>
+        <StartButton onClick={() => navigate("/quickstart")} style={{ width: 'fit-content', padding: '0.5rem 1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <span>立即體驗</span>
+          <span style={{ opacity: '0.6' }}>Free!!</span>
+          <ArrowRightOutlined />
+        </StartButton>
+      </>
     );
   };
 
@@ -55,26 +63,14 @@ export default function Home() {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: isSmall ? '1fr' : '1fr 1fr', width: '95%', maxWidth: '900px', margin: 'auto' }}>
         <div style={{ display: isSmall ? 'none' : 'flex', flexDirection: 'column', justifyContent: 'space-around', padding: '4rem 0' }}>
-          <h1 style={{ textAlign: 'start', color: '#fff' }}>關於我們</h1>
           {renderIntro()}
-          <StartButton onClick={() => navigate("/quickstart")} style={{ width: 'fit-content', padding: '0.5rem 1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span>立即體驗</span>
-            <span style={{ opacity: '0.6' }}>Free!!</span>
-            <ArrowRightOutlined />
-          </StartButton>
         </div>
         <div>
           <Lottie options={defaultOptions} height={isSmall ? 300 : 400} width={isSmall ? 300 : 400} />
         </div>
         {isSmall && (
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', padding: '4rem 0', width: '90%', margin: 'auto' }}>
-            <h1 style={{ textAlign: 'start', color: '#fff' }}>關於我們</h1>
             {renderIntro()}
-            <StartButton onClick={() => navigate("/quickstart")} style={{ width: 'fit-content', padding: '0.5rem 1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <span>立即體驗</span>
-              <span style={{ opacity: '0.6' }}>Free!!</span>
-              <ArrowRightOutlined />
-            </StartButton>
           </div>
         )}
       </div>
